@@ -1,4 +1,6 @@
-﻿using TicTacTow25.Models;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
@@ -11,10 +13,28 @@ namespace TicTacTow25.ModelsLogic
 
         private void OnComplete(Task task)
         {
-            if(task.IsCompletedSuccessfully)
+
+            if (task.IsCompletedSuccessfully)
+            {
                 SaveToPreferences();
+                OnAuthComplete?.Invoke(this, EventArgs.Empty);
+            }
+            else if (task.Exception != null)
+            {
+                //OnAuthComplete?.Invoke(this, EventArgs.Empty);
+                string msg = task.Exception.Message;
+                ShowAlert(msg);
+            }
             else
-                Shell.Current.DisplayAlert(Strings.CreatUserError, task.Exception?.Message,Strings.Ok);
+                ShowAlert(Strings.CreatUserError);
+        }
+
+        private static void ShowAlert(string msg)
+        {
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Toast.Make(msg, ToastDuration.Long).Show();
+            });
         }
 
         private void SaveToPreferences()

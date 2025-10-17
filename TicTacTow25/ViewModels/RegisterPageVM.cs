@@ -1,5 +1,4 @@
-﻿
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
@@ -54,6 +53,18 @@ namespace TicTacTow25.ViewModels
         {
             RegisterCommand = new Command(Register, CanRegister);
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
+            user.OnAuthComplete += OnAuthComplete;
+        }
+
+        private void OnAuthComplete(object? sender, EventArgs e)
+        {
+            if(Application.Current!=null)
+            {
+                MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    Application.Current.MainPage = new AppShell();
+                });
+            }
         }
 
         private bool CanRegister(object arg)
