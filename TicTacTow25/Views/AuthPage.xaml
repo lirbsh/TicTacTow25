@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="TicTacTow25.Views.RegisterPage"
+    x:Class="TicTacTow25.Views.AuthPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:m="clr-namespace:TicTacTow25.Models"
     xmlns:vm="clr-namespace:TicTacTow25.ViewModels"
-    Title="{x:Static m:Strings.Register}"
-    x:DataType="vm:RegisterPageVM">
+    IsBusy="{Binding IsBusy}"
+    x:DataType="vm:AuthPageVM">
     <VerticalStackLayout Padding="7" Spacing="10">
         <Label
             Margin="20"
             FontSize="42"
             HorizontalOptions="Center"
-            Text="{x:Static m:Strings.Register}"
+            Text="{Binding UserStateAction}"
             TextColor="Blue" />
         <Label
             Margin="0,0,0,28"
@@ -22,7 +22,7 @@
             HorizontalOptions="Center"
             Text="{StaticResource IconVerified_user}"
             TextColor="Blue" />
-        <Grid>
+        <Grid IsVisible="{Binding IsRegistered, Converter={StaticResource invertBoolConvert}}">
             <Border>
                 <Entry Placeholder="{x:Static m:Strings.Name}" Text="{Binding Name}" />
             </Border>
@@ -62,11 +62,11 @@
             <Label Text="{x:Static m:Strings.Password}" />
         </Grid>
         <Button
-            Command="{Binding RegisterCommand}"
+            Command="{Binding AuthCommand}"
             CornerRadius="8"
             FontSize="18"
             HeightRequest="50"
-            Text="{x:Static m:Strings.Register}"
+            Text="{Binding UserStateAction}"
             TextColor="White">
             <Button.ImageSource>
                 <FontImageSource Glyph="{StaticResource IconApp_registration}">

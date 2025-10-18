@@ -8,34 +8,38 @@ namespace TicTacTow25.ModelsLogic
     {
         public override void Register()
         {
+            IsBusy = true;
             fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
         }
 
         private void OnComplete(Task task)
         {
-
+            IsBusy = false;
             if (task.IsCompletedSuccessfully)
             {
                 SaveToPreferences();
-                OnAuthComplete?.Invoke(this, EventArgs.Empty);
+                OnAuthComplete?.Invoke(this, true);
             }
             else if (task.Exception != null)
             {
-                //OnAuthComplete?.Invoke(this, EventArgs.Empty);
-                string msg = task.Exception.Message;
-                ShowAlert(msg);
+                string errMessage = task.Exception.Message;
+                ShowAlert(errMessage);
+                OnAuthComplete?.Invoke(this, false);
             }
             else
-                ShowAlert(Strings.CreatUserError);
+                ShowAlert(Strings.UnknownError);
         }
 
-        private static void ShowAlert(string msg)
+        private void ShowAlert(string errMessage)
         {
+            errMessage = fbd.GetErrorMessage(errMessage);
             MainThread.InvokeOnMainThreadAsync(() =>
             {
-                Toast.Make(msg, ToastDuration.Long).Show();
+                Toast.Make(errMessage, ToastDuration.Long).Show();
             });
         }
+
+       
 
         private void SaveToPreferences()
         {
@@ -47,6 +51,12 @@ namespace TicTacTow25.ModelsLogic
         public override bool IsValid()
         {
            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email);
+        }
+
+        internal void Login()
+        {
+            IsBusy = true;
+            fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
         }
 
         public User()

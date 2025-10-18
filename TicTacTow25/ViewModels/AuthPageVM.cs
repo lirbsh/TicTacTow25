@@ -4,12 +4,14 @@ using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.ViewModels
 {
-    internal partial class RegisterPageVM : ObservableObject
+    internal partial class AuthPageVM : ObservableObject
     {
         private readonly User user = new();
-        public ICommand RegisterCommand { get; }
+        public ICommand AuthCommand { get; }
         public ICommand ToggleIsPasswordCommand { get; }
-        public bool IsBusy { get; set; } = false;
+        public bool IsBusy => user.IsBusy;
+        public bool IsRegistered => user.IsRegistered;
+        public string UserStateAction => user.IsRegistered?Strings.Login:Strings.Register;
         public string Name
         {
             get => user.Name;
@@ -18,7 +20,7 @@ namespace TicTacTow25.ViewModels
                 if (user.Name != value)
                 {
                     user.Name = value;
-                    (RegisterCommand as Command)?.ChangeCanExecute();
+                    (AuthCommand as Command)?.ChangeCanExecute();
                 }
             }
         }
@@ -30,7 +32,7 @@ namespace TicTacTow25.ViewModels
                 if (user.Email != value)
                 {
                     user.Email = value;
-                    (RegisterCommand as Command)?.ChangeCanExecute();
+                    (AuthCommand as Command)?.ChangeCanExecute();
                 }
             }
         }
@@ -43,22 +45,25 @@ namespace TicTacTow25.ViewModels
                 if (user.Password != value)
                 {
                     user.Password = value;
-                    (RegisterCommand as Command)?.ChangeCanExecute();
+                    (AuthCommand as Command)?.ChangeCanExecute();
                 }
             }
         }
         public bool IsPassword { get; set; } = true;
 
-        public RegisterPageVM()
+        public AuthPageVM()
         {
-            RegisterCommand = new Command(Register, CanRegister);
+            AuthCommand = user.IsRegistered? new Command(Login, CanAuth): new Command(Register, CanAuth);
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
             user.OnAuthComplete += OnAuthComplete;
         }
 
-        private void OnAuthComplete(object? sender, EventArgs e)
+       
+
+        private void OnAuthComplete(object? sender, bool success)
         {
-            if(Application.Current!=null)
+            OnPropertyChanged(nameof(IsBusy));
+            if (success && Application.Current!=null)
             {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
@@ -67,14 +72,19 @@ namespace TicTacTow25.ViewModels
             }
         }
 
-        private bool CanRegister(object arg)
+        private bool CanAuth()
         {
             return user.IsValid() ;
         }
-
-        private void Register(object obj)
+        private void Login()
+        {
+            user.Login();
+            OnPropertyChanged(nameof(IsBusy));
+        }
+        private void Register()
         {
             user.Register();
+            OnPropertyChanged(nameof(IsBusy));
         }
 
         private void ToggleIsPassword()
