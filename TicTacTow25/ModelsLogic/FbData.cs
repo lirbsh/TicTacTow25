@@ -16,20 +16,28 @@ namespace TicTacTow25.ModelsLogic
 
         public override string GetErrorMessage(string errMessage)
         {
-            int start = errMessage.IndexOf(Keys.MessageKey), 
-                end = errMessage.IndexOf(Keys.ErrorsKey,start);
-            string title = errMessage[(start + Keys.MessageKey.Length)..end]
-                .Replace(Keys.Apostrophe, string.Empty)
-                .Replace(Keys.Colon,string.Empty)
-                .Replace(Keys.Comma,string.Empty)
-                .Trim();
-            title = string.Join(Keys.WordsDelimiter, title.Split(Keys.TitleDelimiter));
-            errMessage = errMessage[(errMessage.IndexOf(Keys.ReasonKey) + 
-                Keys.ReasonKey.Length)..];
-            errMessage = string.Join(Keys.WordsDelimiter, 
-                Regex.Split(errMessage, Keys.UpperCaseDelimiter)).Trim();
-            return title + Keys.NewLine + Keys.ReasonKey + 
+            string retMessage;
+            int end, start = errMessage.IndexOf(Keys.MessageKey);
+            if (start > 0)
+            {
+                end = errMessage.IndexOf(Keys.ErrorsKey, start);
+
+                string title = errMessage[(start + Keys.MessageKey.Length)..end]
+                    .Replace(Keys.Apostrophe, string.Empty)
+                    .Replace(Keys.Colon, string.Empty)
+                    .Replace(Keys.Comma, string.Empty)
+                    .Trim();
+                title = string.Join(Keys.WordsDelimiter, title.Split(Keys.TitleDelimiter));
+                errMessage = errMessage[(errMessage.IndexOf(Keys.ReasonKey) +
+                    Keys.ReasonKey.Length)..];
+                errMessage = string.Join(Keys.WordsDelimiter,
+                    Regex.Split(errMessage, Keys.UpperCaseDelimiter)).Trim();
+                retMessage = title + Keys.NewLine + Keys.ReasonKey +
                 Keys.WordsDelimiter + errMessage[..^1];
+            }
+            else
+                retMessage = errMessage;
+            return retMessage;
         }
     }
 }

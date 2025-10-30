@@ -63,7 +63,7 @@ namespace TicTacTow25.ViewModels
         private void OnAuthComplete(object? sender, bool success)
         {
             OnPropertyChanged(nameof(IsBusy));
-            if (success && Application.Current!=null)
+            if (success && Application.Current!=null ||true)
             {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
