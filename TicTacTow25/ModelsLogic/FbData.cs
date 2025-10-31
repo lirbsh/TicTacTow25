@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Plugin.CloudFirestore;
+using System.Text.RegularExpressions;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -9,9 +10,15 @@ namespace TicTacTow25.ModelsLogic
         {
            await facl.CreateUserWithEmailAndPasswordAsync(email, password, name).ContinueWith(OnComplete);
         }
-        public override async void SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete)
+        public override async Task SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete)
         {
             await facl.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(OnComplete);
+        }
+        public override string SetDocument(object obj, string collectonName, string id, Action<System.Threading.Tasks.Task> OnComplete)
+        {
+            IDocumentReference dr = string.IsNullOrEmpty (id) ? fs.Collection(collectonName).Document(): fs.Collection(collectonName).Document(id);
+            dr.SetAsync(obj).ContinueWith(OnComplete);
+            return dr.Id;
         }
 
         public override string GetErrorMessage(string errMessage)

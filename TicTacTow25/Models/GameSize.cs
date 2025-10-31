@@ -8,11 +8,9 @@
         { 
             Size = size;
         }
-       
         public GameSize()
         {
             Size = 3;
         }
     }
-   
 }
