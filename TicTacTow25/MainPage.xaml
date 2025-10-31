@@ -25,14 +25,14 @@
                 Title="{x:Static m:Strings.SelectGameSize}"
                 FontSize="20"
                 HorizontalTextAlignment="Center"
+                ItemDisplayBinding="{Binding DisplayName}"
                 ItemsSource="{Binding GameSizes}"
-                SelectedItem="{Binding SelectedGameSize}" 
-                ItemDisplayBinding="{Binding DisplayName}"/>
+                SelectedItem="{Binding SelectedGameSize}" />
             <Button
                 Grid.Column="1"
-                FontSize="Body"
                 Margin="10"
                 Command="{Binding AddGameCommand}"
+                FontSize="Body"
                 HorizontalOptions="Fill"
                 Text="{x:Static m:Strings.AddGame}" />
         </Grid>

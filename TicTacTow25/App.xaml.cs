@@ -1,5 +1,4 @@
-﻿using TicTacTow25.ModelsLogic;
-using TicTacTow25.Views;
+﻿using TicTacTow25.Views;
 
 namespace TicTacTow25
 {
@@ -8,7 +7,7 @@ namespace TicTacTow25
         public App()
         {
             InitializeComponent();
-            MainPage = new AuthPage();
+            MainPage = new AuthPage() ;//new AppShell()
         }
     }
 }

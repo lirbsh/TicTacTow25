@@ -10,7 +10,7 @@ namespace TicTacTow25.ModelsLogic
         {
            await facl.CreateUserWithEmailAndPasswordAsync(email, password, name).ContinueWith(OnComplete);
         }
-        public override async Task SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete)
+        public override async void SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete)
         {
             await facl.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(OnComplete);
         }

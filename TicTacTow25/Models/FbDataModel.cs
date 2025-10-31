@@ -12,7 +12,7 @@ namespace TicTacTow25.Models
         public string UserId => facl != null ? facl.User.Uid : string.Empty;
         public abstract string GetErrorMessage(string errMessage);
         public abstract void CreateUserWithEmailAndPasswordAsync(string email, string password, string name, Action<System.Threading.Tasks.Task> OnComplete);
-        public abstract Task SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract void SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete);
         public abstract string SetDocument(object obj, string collectonName, string id, Action<System.Threading.Tasks.Task> OnComplete);
 
         public FbDataModel()

@@ -6,16 +6,16 @@ namespace TicTacTow25.ModelsLogic
 {
     internal class User : UserModel
     {
-        private Task? loginTask;
         public override void Register()
         {
             IsBusy = true;
+            CurrentAction= Actions.Register;
             fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
         }
         internal void Login()
         {
             IsBusy = true;
-            loginTask = fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
+            fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
         }
 
         private void OnComplete(Task task)
@@ -23,8 +23,8 @@ namespace TicTacTow25.ModelsLogic
             IsBusy = false;
             if (task.IsCompletedSuccessfully)
             {
-                Name = fbd.DisplayName;
-                SaveToPreferences();
+                if (CurrentAction == Actions.Register)
+                    SaveToPreferences();
                 OnAuthComplete?.Invoke(this, true);
             }
             else if (task.Exception != null)
