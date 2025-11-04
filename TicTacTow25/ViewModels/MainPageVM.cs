@@ -5,11 +5,11 @@ using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.ViewModels
 {
-    internal class MainPageVM:ObservableObject
+    internal partial class MainPageVM:ObservableObject
     {
-        private Games games = new();
+        private readonly Games games = new();
         public bool IsBusy => games.IsBusy;
-        public  IList<GameSize>? GameSizes { get => games.GameSizes; set => games.GameSizes = value; }
+        public  ObservableCollection<GameSize>? GameSizes { get => games.GameSizes; set => games.GameSizes = value; }
         public GameSize SelectedGameSize { get; set; } = new GameSize();
         public ICommand AddGameCommand => new Command(AddGame);
 
@@ -18,15 +18,30 @@ namespace TicTacTow25.ViewModels
             games.AddGame(SelectedGameSize);
             OnPropertyChanged(nameof(IsBusy));
         }
-        public IList<Game>? GamesList => games.GamesList;
+        public ObservableCollection<Game>? GamesList => games.GamesList;
         public MainPageVM()
         {
             games.OnGameAdded += OnGameAdded;
+            games.OnGamesChanged += OnGamesChanged;
+        }
+
+        private void OnGamesChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(GamesList));
         }
 
         private void OnGameAdded(object? sender, bool e)
         {
             OnPropertyChanged(nameof(IsBusy));
+        }
+        internal void AddSnapshotListener()
+        {
+            games.AddSnapshotListener();
+        }
+
+        internal void RemoveSnapshotListener()
+        {
+            games.RemoveSnapshotListener();
         }
     }
 }

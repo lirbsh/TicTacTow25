@@ -29,6 +29,6 @@
     <Style TargetType="Label">
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="FontSize" Value="18"/>
-        <Setter Property="TextColor" Value="Red"/>
+        <Setter Property="TextColor" Value="Blue"/>
     </Style>
 </ResourceDictionary>

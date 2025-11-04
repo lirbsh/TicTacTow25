@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using Plugin.CloudFirestore;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -8,13 +9,44 @@ namespace TicTacTow25.ModelsLogic
         internal void AddGame(GameSize selectedGameSize)
         {
             IsBusy = true;
-            Game game= new Game(selectedGameSize);
+            Game game= new (selectedGameSize);
             game.SetDocument(OnComplete);
         }
         private void OnComplete(Task task)
         {
             IsBusy = false;
             OnGameAdded?.Invoke(this, task.IsCompletedSuccessfully);
+        }
+        public Games()
+        {
+
+        }
+        public void AddSnapshotListener()
+        {
+            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, OnChange!);
+        }
+        public void RemoveSnapshotListener()
+        {
+            ilr?.Remove();
+        }
+        private void OnChange(IQuerySnapshot snapshot, Exception error)
+        {
+            fbd.GetDocumentsWhereEqualTo(Keys.GamesCollection, nameof(GameModel.IsFull), false, OnComplete);
+        }
+
+        private void OnComplete(IQuerySnapshot qs)
+        {
+            GamesList!.Clear();
+            foreach (IDocumentSnapshot ds in qs.Documents)
+            {
+                Game? game = ds.ToObject<Game>();
+                if (game != null)
+                {
+                    game.Id = ds.Id;
+                    GamesList.Add(game);
+                }
+            }
+            OnGamesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

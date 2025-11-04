@@ -1,6 +1,4 @@
-﻿
-using CommunityToolkit.Maui.Alerts;
-using TicTacTow25.Models;
+﻿using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
@@ -12,7 +10,9 @@ namespace TicTacTow25.ModelsLogic
             RowSize = selectedGameSize.Size;
             Created = DateTime.Now;
         }
-
+        internal Game()
+        {
+        }
         public override void SetDocument(Action<System.Threading.Tasks.Task> OnComplete)
         {
            Id = fbd.SetDocument(this, Keys.GamesCollection, Id, OnComplete);
