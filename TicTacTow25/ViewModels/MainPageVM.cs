@@ -8,17 +8,18 @@ namespace TicTacTow25.ViewModels
     internal partial class MainPageVM:ObservableObject
     {
         private readonly Games games = new();
+        public ICommand AddGameCommand => new Command(AddGame);
         public bool IsBusy => games.IsBusy;
         public  ObservableCollection<GameSize>? GameSizes { get => games.GameSizes; set => games.GameSizes = value; }
-        public GameSize SelectedGameSize { get; set; } = new GameSize();
-        public ICommand AddGameCommand => new Command(AddGame);
+        public GameSize SelectedGameSize { get =>games.SelectedGameSize; set =>games.SelectedGameSize = value; } 
+        public ObservableCollection<Game>? GamesList => games.GamesList;
 
         private void AddGame()
         {
-            games.AddGame(SelectedGameSize);
+            games.AddGame();
             OnPropertyChanged(nameof(IsBusy));
         }
-        public ObservableCollection<Game>? GamesList => games.GamesList;
+      
         public MainPageVM()
         {
             games.OnGameAdded += OnGameAdded;

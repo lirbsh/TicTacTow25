@@ -56,7 +56,7 @@
                                 Grid.Column="2"
                                 FontSize="20"
                                 HorizontalOptions="Center"
-                                Text="{Binding RowSize}" />
+                                Text="{Binding RowSizeName}" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

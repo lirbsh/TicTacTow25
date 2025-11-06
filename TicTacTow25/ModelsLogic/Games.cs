@@ -6,10 +6,10 @@ namespace TicTacTow25.ModelsLogic
 {
     internal class Games : GamesModel
     {
-        internal void AddGame(GameSize selectedGameSize)
+        internal void AddGame()
         {
             IsBusy = true;
-            Game game= new (selectedGameSize);
+            Game game= new (SelectedGameSize);
             game.SetDocument(OnComplete);
         }
         private void OnComplete(Task task)
