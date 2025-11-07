@@ -4,7 +4,7 @@ using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.ViewModels
 {
-    internal partial class AuthPageVM : ObservableObject
+    public partial class AuthPageVM : ObservableObject
     {
         private readonly User user = new();
         public ICommand AuthCommand { get; }

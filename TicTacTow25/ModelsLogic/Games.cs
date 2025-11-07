@@ -4,18 +4,19 @@ using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
-    internal class Games : GamesModel
+    public class Games : GamesModel
     {
-        internal void AddGame()
+        public void AddGame()
         {
             IsBusy = true;
-            Game game= new (SelectedGameSize);
-            game.SetDocument(OnComplete);
+            currentGame = new (SelectedGameSize);
+            currentGame.IsHost = true;
+            currentGame.SetDocument(OnComplete);
         }
         private void OnComplete(Task task)
         {
             IsBusy = false;
-            OnGameAdded?.Invoke(this, task.IsCompletedSuccessfully);
+            OnGameAdded?.Invoke(this, currentGame!);
         }
         public Games()
         {

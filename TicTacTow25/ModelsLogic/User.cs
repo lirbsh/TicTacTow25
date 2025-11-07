@@ -4,7 +4,7 @@ using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
-    internal class User : UserModel
+    public class User : UserModel
     {
         public override void Register()
         {
@@ -12,7 +12,7 @@ namespace TicTacTow25.ModelsLogic
             CurrentAction= Actions.Register;
             fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
         }
-        internal void Login()
+        public void Login()
         {
             IsBusy = true;
             fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);

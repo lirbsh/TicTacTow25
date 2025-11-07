@@ -2,7 +2,7 @@
 
 namespace TicTacTow25.Models
 {
-    internal abstract class UserModel
+    public abstract class UserModel
     {
         protected FbData fbd = new();
         protected enum Actions { Register, Login }

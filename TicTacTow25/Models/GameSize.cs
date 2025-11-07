@@ -1,6 +1,6 @@
 ﻿namespace TicTacTow25.Models
 {
-    internal class GameSize
+    public class GameSize
     {
         public int Size { get; set; }
         public string DisplayName => $"{Size} x {Size}";

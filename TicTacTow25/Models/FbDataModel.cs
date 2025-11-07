@@ -4,7 +4,7 @@ using Plugin.CloudFirestore;
 
 namespace TicTacTow25.Models
 {
-    abstract class FbDataModel
+    public abstract class FbDataModel
     {
         protected FirebaseAuthClient facl;
         protected IFirestore fs;
