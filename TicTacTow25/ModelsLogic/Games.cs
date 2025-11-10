@@ -9,10 +9,22 @@ namespace TicTacTow25.ModelsLogic
         public void AddGame()
         {
             IsBusy = true;
-            currentGame = new (SelectedGameSize);
-            currentGame.IsHost = true;
+            currentGame = new(SelectedGameSize)
+            {
+                IsHostUser = true
+            };
+            currentGame.OnGameDeleted += OnGameDeleted;
             currentGame.SetDocument(OnComplete);
         }
+
+        private void OnGameDeleted(object? sender, EventArgs e)
+        {
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Toast.Make(Strings.GameDeleted, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+            });
+        }
+
         private void OnComplete(Task task)
         {
             IsBusy = false;
@@ -22,11 +34,11 @@ namespace TicTacTow25.ModelsLogic
         {
 
         }
-        public void AddSnapshotListener()
+        public override void AddSnapshotListener()
         {
             ilr = fbd.AddSnapshotListener(Keys.GamesCollection, OnChange!);
         }
-        public void RemoveSnapshotListener()
+        public override void RemoveSnapshotListener()
         {
             ilr?.Remove();
         }

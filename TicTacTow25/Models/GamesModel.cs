@@ -4,7 +4,7 @@ using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.Models
 {
-    public class GamesModel
+    public abstract class GamesModel
     {
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
@@ -18,5 +18,7 @@ namespace TicTacTow25.Models
 
         public EventHandler<Game>? OnGameAdded;
         public EventHandler? OnGamesChanged;
+        public abstract void RemoveSnapshotListener();
+        public abstract void AddSnapshotListener();
     }
 }

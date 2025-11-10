@@ -1,4 +1,5 @@
-﻿using Plugin.CloudFirestore.Attributes;
+﻿using Plugin.CloudFirestore;
+using Plugin.CloudFirestore.Attributes;
 using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.Models
@@ -6,6 +7,11 @@ namespace TicTacTow25.Models
     public abstract class GameModel
     {
         protected FbData fbd = new();
+        protected IListenerRegistration? ilr;
+        [Ignored]
+        public EventHandler? OnGameChanged;
+        [Ignored]
+        public EventHandler? OnGameDeleted;
         [Ignored]
         public string Id { get; set; } = string.Empty;
         public string HostName { get; set; } = string.Empty;
@@ -20,7 +26,10 @@ namespace TicTacTow25.Models
         [Ignored]
         public string RowSizeName => $"{RowSize} X {RowSize}";
         [Ignored]
-        public bool IsHost { get; set; }
+        public bool IsHostUser { get; set; }
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract void RemoveSnapshotListener();
+        public abstract void AddSnapshotListener();
+        public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
     }
 }
