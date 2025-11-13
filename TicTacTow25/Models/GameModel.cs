@@ -31,5 +31,6 @@ namespace TicTacTow25.Models
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract void InitGrid(Grid board);
     }
 }

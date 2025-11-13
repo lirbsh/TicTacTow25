@@ -57,7 +57,7 @@ namespace TicTacTow25.ModelsLogic
 
         public override bool IsValid()
         {
-           return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email);
+           return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email) && !IsBusy;
         }
 
         

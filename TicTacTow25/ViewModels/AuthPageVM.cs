@@ -62,13 +62,21 @@ namespace TicTacTow25.ViewModels
 
         private void OnAuthComplete(object? sender, bool success)
         {
-            OnPropertyChanged(nameof(IsBusy));
-            if (success && Application.Current!=null)
+            
+            if (success && Application.Current != null)
             {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     Application.Current.MainPage = new AppShell();
                 });
+            }
+            else
+            {
+                MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    (AuthCommand as Command)?.ChangeCanExecute();
+                });
+                OnPropertyChanged(nameof(IsBusy));
             }
         }
 
@@ -78,13 +86,21 @@ namespace TicTacTow25.ViewModels
         }
         private void Login()
         {
-            user.Login();
-            OnPropertyChanged(nameof(IsBusy));
+            if (!IsBusy)
+            {
+                user.Login();
+                OnPropertyChanged(nameof(IsBusy));
+                (AuthCommand as Command)?.ChangeCanExecute();
+            }
         }
         private void Register()
         {
-            user.Register();
-            OnPropertyChanged(nameof(IsBusy));
+            if (!IsBusy)
+            {
+                user.Register();
+                OnPropertyChanged(nameof(IsBusy));
+                (AuthCommand as Command)?.ChangeCanExecute();
+            }
         }
 
         private void ToggleIsPassword()
