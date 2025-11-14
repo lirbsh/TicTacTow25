@@ -12,6 +12,9 @@ namespace TicTacTow25.Models
         public EventHandler? OnGameChanged;
         [Ignored]
         public EventHandler? OnGameDeleted;
+        protected abstract GameStatus Status { get;  } 
+        [Ignored]
+        public string StatusMessage => Status.StatusMessage;
         [Ignored]
         public string Id { get; set; } = string.Empty;
         public string HostName { get; set; } = string.Empty;
@@ -19,6 +22,7 @@ namespace TicTacTow25.Models
         public DateTime Created { get; set; }
         public int RowSize {  get; set; }
         public bool IsFull { get; set; }
+        public bool IsHostTurn { get; set; } = false;
         [Ignored]
         public abstract string OpponentName { get;}
         [Ignored]

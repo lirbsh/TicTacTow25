@@ -2,6 +2,7 @@
 
 using CommunityToolkit.Maui.Alerts;
 using Plugin.CloudFirestore;
+using Plugin.CloudFirestore.Attributes;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -9,6 +10,9 @@ namespace TicTacTow25.ModelsLogic
     public class Game : GameModel
     {
         public override string OpponentName => IsHostUser ? GuestName : HostName;
+        protected override  GameStatus Status => IsHostUser && IsHostTurn || !IsHostUser && !IsHostTurn ? 
+            new GameStatus { CurrentStatus = GameStatus.Status.Play } :
+            new GameStatus { CurrentStatus = GameStatus.Status.Wait };
 
         public Game(GameSize selectedGameSize)
         {

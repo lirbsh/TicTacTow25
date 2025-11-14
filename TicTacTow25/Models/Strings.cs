@@ -15,5 +15,7 @@
         public const string SelectGameSize = "Select Game Size";
         public const string JoinGameErr ="Error joining game";
         public const string GameCanceld ="Game Canceled";
+        public const string WaitMessage ="Please wait";
+        public const string PlayMessage ="Play please";
     }
 }
