@@ -8,6 +8,7 @@ namespace TicTacTow25.Models
     {
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
+        protected GameStatus _status = new();
         [Ignored]
         public EventHandler? OnGameChanged;
         [Ignored]
@@ -36,5 +37,6 @@ namespace TicTacTow25.Models
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void InitGrid(Grid board);
+        protected abstract void UpdateStatus();
     }
 }

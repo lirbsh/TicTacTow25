@@ -2,7 +2,6 @@
 
 using CommunityToolkit.Maui.Alerts;
 using Plugin.CloudFirestore;
-using Plugin.CloudFirestore.Attributes;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -10,18 +9,24 @@ namespace TicTacTow25.ModelsLogic
     public class Game : GameModel
     {
         public override string OpponentName => IsHostUser ? GuestName : HostName;
-        protected override  GameStatus Status => IsHostUser && IsHostTurn || !IsHostUser && !IsHostTurn ? 
-            new GameStatus { CurrentStatus = GameStatus.Status.Play } :
-            new GameStatus { CurrentStatus = GameStatus.Status.Wait };
+        protected override GameStatus Status => _status; 
 
         public Game(GameSize selectedGameSize)
         {
             HostName = new User().Name;
+            IsHostUser = true;
             RowSize = selectedGameSize.Size;
             Created = DateTime.Now;
+            UpdateStatus();
         }
         public Game()
         {
+            UpdateStatus();
+        }
+        protected override void UpdateStatus()
+        {
+            _status.CurrentStatus = IsHostUser && IsHostTurn || !IsHostUser && !IsHostTurn ?
+                GameStatus.Status.Play : GameStatus.Status.Wait;
         }
         public override void SetDocument(Action<Task> OnComplete)
         {
