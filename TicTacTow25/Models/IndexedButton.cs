@@ -8,6 +8,7 @@
         {
             RowIndex = rowIndex;
             ColumnIndex = columnIndex;
+            FontSize = 40;
             HeightRequest = 70;
             WidthRequest = HeightRequest;
         }

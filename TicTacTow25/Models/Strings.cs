@@ -17,5 +17,7 @@
         public const string GameCanceld ="Game Canceled";
         public const string WaitMessage ="Please wait";
         public const string PlayMessage ="Play please";
+        public const string X ="X";
+        public const string O ="O";
     }
 }

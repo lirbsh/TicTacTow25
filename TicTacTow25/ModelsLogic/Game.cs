@@ -1,6 +1,4 @@
-﻿
-
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using Plugin.CloudFirestore;
 using TicTacTow25.Models;
 
@@ -26,7 +24,7 @@ namespace TicTacTow25.ModelsLogic
         protected override void UpdateStatus()
         {
             _status.CurrentStatus = IsHostUser && IsHostTurn || !IsHostUser && !IsHostTurn ?
-                GameStatus.Status.Play : GameStatus.Status.Wait;
+                GameStatus.Statuses.Play : GameStatus.Statuses.Wait;
         }
         public override void SetDocument(Action<Task> OnComplete)
         {
@@ -75,6 +73,8 @@ namespace TicTacTow25.ModelsLogic
                 IsFull = updatedGame.IsFull;
                 GuestName = updatedGame.GuestName;
                 OnGameChanged?.Invoke(this, EventArgs.Empty);
+                if(_status.CurrentStatus == GameStatus.Statuses.Play)
+                   Play(updatedGame.Move[0], updatedGame.Move[1],false);
             }
             else
             {
@@ -92,8 +92,11 @@ namespace TicTacTow25.ModelsLogic
             fbd.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
         }
 
-        public override void InitGrid(Grid board)
+        public override void Init(Grid board)
         {
+            gameBoard = new string[RowSize, RowSize];
+            gameButtons = new IndexedButton[RowSize, RowSize];
+            IndexedButton btn;
             for (int i = 0; i < RowSize; i++)
             {
                 board.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -101,8 +104,48 @@ namespace TicTacTow25.ModelsLogic
             }
             for (int i = 0; i < RowSize; i++)
                 for (int j = 0; j < RowSize; j++)
-                    board.Add(new IndexedButton(i, j), j, i);
+                {
+                    btn = new IndexedButton(i, j);
+                    gameButtons[i, j] = btn;
+                    btn.Clicked += OnButtonClicked;
+                    board.Add(btn, j, i);
+                }
 
+        }
+
+        protected override void OnButtonClicked(object? sender, EventArgs e)
+        {
+            if (_status.CurrentStatus == GameStatus.Statuses.Play)
+            {
+                IndexedButton? btn = sender as IndexedButton;
+                if(btn!.Text == string.Empty)
+                    Play(btn!.RowIndex, btn.ColumnIndex,true);
+            }
+        }
+
+        protected override void Play( int rowIndex, int columnIndex, bool MyMove)
+        {
+            gameButtons![rowIndex, columnIndex].Text = nextPlay;
+            gameBoard![rowIndex, columnIndex] = nextPlay;
+            nextPlay = nextPlay == Strings.X ? Strings.O : Strings.X;
+            if (MyMove)
+            {
+                Move[0]= rowIndex;
+                Move[1]= columnIndex;
+                _status.UpdateStatus();
+                IsHostTurn = !IsHostTurn;
+                UpdateFbMove();
+            }
+        }
+
+        protected override void UpdateFbMove()
+        {
+            Dictionary<string, object> dict = new()
+            {
+                { nameof(Move), Move },
+                { nameof(IsHostTurn), IsHostTurn }
+            };
+            fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
     }
 }

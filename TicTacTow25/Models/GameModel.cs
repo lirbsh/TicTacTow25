@@ -9,6 +9,9 @@ namespace TicTacTow25.Models
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
         protected GameStatus _status = new();
+        protected string[,]? gameBoard;
+        protected IndexedButton[,]? gameButtons;
+        protected string nextPlay = Strings.X;
         [Ignored]
         public EventHandler? OnGameChanged;
         [Ignored]
@@ -24,6 +27,7 @@ namespace TicTacTow25.Models
         public int RowSize {  get; set; }
         public bool IsFull { get; set; }
         public bool IsHostTurn { get; set; } = false;
+        public List<int> Move { get; set; } = [-1, -1];
         [Ignored]
         public abstract string OpponentName { get;}
         [Ignored]
@@ -36,7 +40,10 @@ namespace TicTacTow25.Models
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
-        public abstract void InitGrid(Grid board);
+        public abstract void Init(Grid board);
         protected abstract void UpdateStatus();
+        protected abstract void OnButtonClicked(object? sender, EventArgs e);
+        protected abstract void Play(int rowIndex, int columnIndex, bool MyMove);
+        protected abstract void UpdateFbMove();
     }
 }
