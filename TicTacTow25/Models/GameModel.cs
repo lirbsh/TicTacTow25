@@ -27,7 +27,7 @@ namespace TicTacTow25.Models
         public int RowSize {  get; set; }
         public bool IsFull { get; set; }
         public bool IsHostTurn { get; set; } = false;
-        public List<int> Move { get; set; } = [-1, -1];
+        public List<int> Move { get; set; } = [Keys.NoMove,Keys.NoMove];
         [Ignored]
         public abstract string OpponentName { get;}
         [Ignored]

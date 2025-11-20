@@ -65,27 +65,7 @@ namespace TicTacTow25.ModelsLogic
                 OnGameDeleted?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
-        {
-            Game? updatedGame = snapshot?.ToObject<Game>();
-            if (updatedGame != null)
-            {
-                IsFull = updatedGame.IsFull;
-                GuestName = updatedGame.GuestName;
-                OnGameChanged?.Invoke(this, EventArgs.Empty);
-                if(_status.CurrentStatus == GameStatus.Statuses.Play)
-                   Play(updatedGame.Move[0], updatedGame.Move[1],false);
-            }
-            else
-            {
-                MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    Shell.Current.Navigation.PopAsync();
-                    Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
-                });
-
-            }
-        }
+        
 
         public override void DeleteDocument(Action<Task> OnComplete)
         {
@@ -146,6 +126,27 @@ namespace TicTacTow25.ModelsLogic
                 { nameof(IsHostTurn), IsHostTurn }
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
+        }
+        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
+        {
+            Game? updatedGame = snapshot?.ToObject<Game>();
+            if (updatedGame != null)
+            {
+                IsFull = updatedGame.IsFull;
+                GuestName = updatedGame.GuestName;
+                OnGameChanged?.Invoke(this, EventArgs.Empty);
+                if (_status.CurrentStatus == GameStatus.Statuses.Play && updatedGame.Move[0] != Keys.NoMove)
+                    Play(updatedGame.Move[0], updatedGame.Move[1], false);
+            }
+            else
+            {
+                MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    Shell.Current.Navigation.PopAsync();
+                    Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                });
+
+            }
         }
     }
 }
