@@ -6,6 +6,8 @@ namespace TicTacTow25.Models
 {
     public abstract class GameModel
     {
+        protected enum Actions { Changed, Deleted }
+        protected Actions action = Actions.Changed;
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
         protected GameStatus _status = new();

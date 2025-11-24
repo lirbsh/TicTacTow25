@@ -22,6 +22,7 @@ namespace TicTacTow25.ViewModels
         private void OnGameChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(OpponentName));
+            OnPropertyChanged(nameof(StatusMessage));
         }
 
         private void OnComplete(Task task)

@@ -45,6 +45,7 @@ namespace TicTacTow25.ModelsLogic
                 { nameof(IsFull), IsFull },
                 { nameof(GuestName), GuestName }
             };
+            action = Actions.Changed;
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
 
@@ -56,13 +57,17 @@ namespace TicTacTow25.ModelsLogic
         public override void RemoveSnapshotListener()
         {
             ilr?.Remove();
+            action = Actions.Deleted;
             DeleteDocument(OnComplete);
         }
 
         private void OnComplete(Task task)
         {
             if (task.IsCompletedSuccessfully)
-                OnGameDeleted?.Invoke(this, EventArgs.Empty);
+                if(action == Actions.Deleted)
+                    OnGameDeleted?.Invoke(this, EventArgs.Empty);
+                else
+                    OnGameChanged?.Invoke(this, EventArgs.Empty);
         }
 
         
@@ -98,7 +103,7 @@ namespace TicTacTow25.ModelsLogic
             if (_status.CurrentStatus == GameStatus.Statuses.Play)
             {
                 IndexedButton? btn = sender as IndexedButton;
-                if(btn!.Text == string.Empty)
+                if(string.IsNullOrEmpty(btn!.Text))
                     Play(btn!.RowIndex, btn.ColumnIndex,true);
             }
         }
@@ -116,6 +121,8 @@ namespace TicTacTow25.ModelsLogic
                 IsHostTurn = !IsHostTurn;
                 UpdateFbMove();
             }
+            else
+                OnGameChanged?.Invoke(this, EventArgs.Empty);
         }
 
         protected override void UpdateFbMove()
@@ -135,6 +142,8 @@ namespace TicTacTow25.ModelsLogic
                 IsFull = updatedGame.IsFull;
                 GuestName = updatedGame.GuestName;
                 OnGameChanged?.Invoke(this, EventArgs.Empty);
+                IsHostTurn = updatedGame.IsHostTurn;
+                UpdateStatus();
                 if (_status.CurrentStatus == GameStatus.Statuses.Play && updatedGame.Move[0] != Keys.NoMove)
                     Play(updatedGame.Move[0], updatedGame.Move[1], false);
             }
