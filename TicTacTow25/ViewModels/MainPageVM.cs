@@ -9,7 +9,7 @@ namespace TicTacTow25.ViewModels
     public partial class MainPageVM:ObservableObject
     {
         private readonly Games games = new();
-        public ICommand AddGameCommand => new Command(AddGame);
+        public ICommand AddGameCommand { get; } 
 
         private void AddGame()
         {
@@ -44,6 +44,7 @@ namespace TicTacTow25.ViewModels
       
         public MainPageVM()
         {
+            AddGameCommand = new Command(AddGame);
             games.OnGameAdded += OnGameAdded;
             games.OnGamesChanged += OnGamesChanged;
         }

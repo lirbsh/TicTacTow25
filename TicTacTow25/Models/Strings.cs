@@ -13,11 +13,14 @@
         public const string AddGame = "Add Game";
         public const string GameSize = "Game Size";
         public const string SelectGameSize = "Select Game Size";
+        public const string SelectTotalPlayers = "Total Players";
         public const string JoinGameErr ="Error joining game";
         public const string GameCanceld ="Game Canceled";
         public const string WaitMessage ="Please wait";
         public const string PlayMessage ="Play please";
         public const string X ="X";
         public const string O ="O";
+        public const string MPGamesPageKey = "/MPGamesPage";
+        public const string MainPageKey = "/MainPage";
     }
 }

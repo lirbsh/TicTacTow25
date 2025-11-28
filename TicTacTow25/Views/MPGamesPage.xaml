@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TicTacTow25.Views.MPGamesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:TicTacTow25.Models"
+    xmlns:vm="clr-namespace:TicTacTow25.ViewModels"
+    Title="MPGamesPage"
+    x:DataType="vm:MPGamesPageVM"
+    IsBusy="{Binding IsBusy}">
+    <VerticalStackLayout>
+        <Grid
+            Padding="5"
+            ColumnDefinitions="*,1.4*"
+            ColumnSpacing="5">
+            <Picker
+                Title="{x:Static m:Strings.SelectTotalPlayers}"
+                FontSize="20"
+                HorizontalTextAlignment="Center"
+                ItemsSource="{Binding Source={x:Static vm:MPGamesPageVM.TotalPlayers}}"
+                SelectedItem="{Binding SelectedTotalPlayers}" />
+            <Button
+                Grid.Column="1"
+                Margin="10"
+                Command="{Binding AddGameCommand}"
+                FontSize="Body"
+                HorizontalOptions="Fill"
+                Text="{x:Static m:Strings.AddGame}" />
+        </Grid>
+        <ListView ItemsSource="{Binding GamesList}" SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:MPGameModel">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="*,2*,0.5*">
+                            <Label
+                                Grid.Column="0"
+                                Margin="20,0,0,0"
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                HorizontalTextAlignment="Start"
+                                Text="{Binding HostName}" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="20"
+                                Text="{Binding Created}" />
+                            <Label
+                                Grid.Column="2"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="{Binding JoinStatus}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>

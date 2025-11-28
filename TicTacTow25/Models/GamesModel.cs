@@ -8,10 +8,10 @@ namespace TicTacTow25.Models
     {
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
-        protected Game? currentGame;
+        protected Game? _currentGame;
 
         public bool IsBusy { get; set; }
-        public Game? CurrentGame { get => currentGame; set => currentGame = value; }
+        public Game? CurrentGame { get => _currentGame; set => _currentGame = value; }
         public ObservableCollection<Game>? GamesList { get; set; } = [];
         public ObservableCollection<GameSize>? GameSizes { get; set; } = [new GameSize(3), new GameSize(4), new GameSize(5)];
         public GameSize SelectedGameSize { get; set; } = new();
@@ -20,5 +20,6 @@ namespace TicTacTow25.Models
         public EventHandler? OnGamesChanged;
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
+        public abstract void AddGame();
     }
 }
