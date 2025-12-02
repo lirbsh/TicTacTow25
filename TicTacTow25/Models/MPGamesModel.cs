@@ -15,6 +15,7 @@ namespace TicTacTow25.Models
         public int SelectedTotalPlayers { get; set; }
         public ObservableCollection<MPGame>? GamesList { get; set; } = [];
         public MPGame? CurrentGame { get => _currentGame; set => _currentGame = value; }
+     
         public EventHandler<MPGame>? OnGameAdded;
         public EventHandler? OnGamesChanged;
         public abstract void RemoveSnapshotListener();

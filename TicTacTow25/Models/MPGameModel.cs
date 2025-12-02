@@ -1,11 +1,15 @@
-﻿using Plugin.CloudFirestore.Attributes;
+﻿using Plugin.CloudFirestore;
+using Plugin.CloudFirestore.Attributes;
 using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.Models
 {
     public abstract class MPGameModel
     {
+        protected IListenerRegistration? ilr;
+
         protected FbData fbd = new();
+        protected int myIndex = 0;
 
         [Ignored]
         public EventHandler? OnGameDeleted;
@@ -13,15 +17,20 @@ namespace TicTacTow25.Models
         public string Id { get; set; } = string.Empty;
         [Ignored]
         public string MyName { get; set; } = new User().Name;
-        public string HostName { get; set; } = string.Empty;
         public DateTime Created { get; set; }
         public int TotalPlayers { get; set; }
         public int CurrentPlayers { get; set; } = 1;
+        public List<string> PlayersNames { get; set; } = new();
+        [Ignored]
+        public string HostName => PlayersNames[0];
         public bool IsFull { get; set; }
         [Ignored]
-        public abstract string JoinStatus { get; } 
+        public abstract string JoinStatus { get; }
 
+        public abstract void RemoveSnapshotListener();
+        public abstract void AddSnapshotListener();
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
-
+        public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract void JoinGame();
     }
 }

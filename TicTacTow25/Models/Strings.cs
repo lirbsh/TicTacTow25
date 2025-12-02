@@ -22,5 +22,6 @@
         public const string O ="O";
         public const string MPGamesPageKey = "/MPGamesPage";
         public const string MainPageKey = "/MainPage";
+        public const string Waiting = "Waiting...";
     }
 }

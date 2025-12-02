@@ -37,6 +37,7 @@ namespace TicTacTow25.ViewModels
                 if (value != null)
                 {
                     mpGames.CurrentGame = value;
+                    value.JoinGame();
                     MainThread.InvokeOnMainThreadAsync(() =>
                     {
                         Shell.Current.Navigation.PushAsync(new MPGamePage(value), true);
@@ -75,12 +76,12 @@ namespace TicTacTow25.ViewModels
 
         internal void AddSnapshotListener()
         {
-           
+            mpGames.AddSnapshotListener();
         }
 
         internal void RemoveSnapshotListener()
         {
-           
+            mpGames.RemoveSnapshotListener();
         }
     }
 }

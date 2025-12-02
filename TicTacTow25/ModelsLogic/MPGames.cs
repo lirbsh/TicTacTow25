@@ -8,7 +8,7 @@ namespace TicTacTow25.ModelsLogic
     {
         public override void AddSnapshotListener()
         {
-            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, OnChange!);
+            ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, OnChange!);
         }
         public override void RemoveSnapshotListener()
         {

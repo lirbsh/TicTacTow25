@@ -38,6 +38,7 @@ namespace TicTacTow25.Models
         public string RowSizeName => $"{RowSize} X {RowSize}";
         [Ignored]
         public bool IsHostUser { get; set; }
+
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();

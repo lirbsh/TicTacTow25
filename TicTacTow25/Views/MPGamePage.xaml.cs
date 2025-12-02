@@ -9,8 +9,8 @@ public partial class MPGamePage : ContentPage
     private readonly MPGamePageVM mpgpVM;
     public MPGamePage(MPGame game)
 	{
-		InitializeComponent();
-		mpgpVM = new MPGamePageVM(game);
+        InitializeComponent();
+        mpgpVM = new MPGamePageVM(game, grdOponnents);
 		BindingContext = mpgpVM;
 
     }

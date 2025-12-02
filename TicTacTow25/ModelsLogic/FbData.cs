@@ -1,4 +1,5 @@
-﻿using Plugin.CloudFirestore;
+﻿using Android.Gms.Common.Apis;
+using Plugin.CloudFirestore;
 using System.Text.RegularExpressions;
 using TicTacTow25.Models;
 
@@ -74,5 +75,29 @@ namespace TicTacTow25.ModelsLogic
             await dr.DeleteAsync().ContinueWith(OnComplete);
         }
 
+        public override async void UpdateField(string collectonName, string id, string fieldName, object fieldValue, Action<Task> OnComplete)
+        {
+            IDocumentReference dr = fs.Collection(collectonName).Document(id);
+            await dr.UpdateAsync(fieldName, fieldValue).ContinueWith(OnComplete);
+        }
+        public override void StartBatch()
+        {
+            batch = fs.Batch();
+        }
+
+        public override void BatchUpdateField(string collectonName, string id, string fName, object fValue)
+        {
+            IDocumentReference dr = fs.Collection(collectonName).Document(id);
+            batch?.Update(dr, fName, fValue);
+        }
+        public override void BatchIncrementField(string collectonName, string id, string fName, long incrementBy)
+        {
+            IDocumentReference dr = fs.Collection(collectonName).Document(id);
+            batch?.Update(dr, fName, FieldValue.Increment(incrementBy));
+        }
+        public override void CommitBatch(Action<System.Threading.Tasks.Task> OnComplete)
+        {
+            batch?.CommitAsync().ContinueWith(OnComplete);
+        }
     }
 }
