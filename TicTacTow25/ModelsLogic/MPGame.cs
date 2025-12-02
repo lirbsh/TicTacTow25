@@ -21,13 +21,10 @@ namespace TicTacTow25.ModelsLogic
         }
         public override void AddSnapshotListener()
         {
-            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, Id, OnChange);
+            ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, Id, OnChange);
         }
 
-        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
-        {
-            
-        }
+      
 
         public override void RemoveSnapshotListener()
         {
@@ -50,11 +47,24 @@ namespace TicTacTow25.ModelsLogic
         {
             if (CurrentPlayers + 1 == TotalPlayers)
                 fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(IsFull), true, OnComplete);
+            MyIndex = CurrentPlayers;
             PlayersNames.Add(MyName);
             fbd.StartBatch();
             fbd.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
             fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(PlayersNames), PlayersNames);
             fbd.CommitBatch(OnComplete);
+        }
+        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
+        {
+            MPGame? game = snapshot?.ToObject<MPGame>();
+            if (game != null)
+            {
+                CurrentPlayers = game.CurrentPlayers;
+                PlayersNames = game.PlayersNames;
+                OnGameChanged?.Invoke(this, EventArgs.Empty);
+            }
+            else
+                OnGameDeleted?.Invoke(this, EventArgs.Empty);
         }
     }
 }

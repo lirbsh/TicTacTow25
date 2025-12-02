@@ -7,7 +7,7 @@ namespace TicTacTow25
         public App()
         {
             InitializeComponent();
-            MainPage = new AppShell(); // new AuthPage();
+            MainPage = new AuthPage();//  new AppShell();
         }
     }
 }

@@ -154,7 +154,6 @@ namespace TicTacTow25.ModelsLogic
                     Shell.Current.Navigation.PopAsync();
                     Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
                 });
-
             }
         }
     }

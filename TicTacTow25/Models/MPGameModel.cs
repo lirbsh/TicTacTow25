@@ -9,8 +9,10 @@ namespace TicTacTow25.Models
         protected IListenerRegistration? ilr;
 
         protected FbData fbd = new();
-        protected int myIndex = 0;
-
+        [Ignored]
+        public int MyIndex { get; protected set; } = 0;
+        [Ignored]
+        public EventHandler? OnGameChanged;
         [Ignored]
         public EventHandler? OnGameDeleted;
         [Ignored]
@@ -20,7 +22,7 @@ namespace TicTacTow25.Models
         public DateTime Created { get; set; }
         public int TotalPlayers { get; set; }
         public int CurrentPlayers { get; set; } = 1;
-        public List<string> PlayersNames { get; set; } = new();
+        public List<string> PlayersNames { get; set; } = [];
         [Ignored]
         public string HostName => PlayersNames[0];
         public bool IsFull { get; set; }

@@ -1,17 +1,43 @@
-﻿using TicTacTow25.Models;
+﻿using CommunityToolkit.Maui.Alerts;
+using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.ViewModels
 {
-    public class MPGamePageVM: ObservableObject
+    public partial class MPGamePageVM: ObservableObject
     {
         private readonly MPGame game;
-        private readonly List<Label> lstOponnentsLabels = new();
+        private readonly List<Label> lstOponnentsLabels = [];
         public string MyName => game.MyName;
         public MPGamePageVM(MPGame game,Grid grdOponnents)
         {
             this.game = game;
+            game.OnGameChanged += OnGameChanged;
+            game.OnGameDeleted += OnGameDeleted;
             InitOponnentsGrid(grdOponnents);
+        }
+
+        private void OnGameDeleted(object? sender, EventArgs e)
+        {
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Shell.Current.Navigation.PopAsync();
+                Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+            });
+        }
+
+        private void OnGameChanged(object? sender, EventArgs e)
+        {
+            DisplayOponnentsNames();
+        }
+
+        private void DisplayOponnentsNames()
+        {
+            int lblIndex = 0;
+            for (int i = 0; i < game.MyIndex; i++)
+                lstOponnentsLabels[lblIndex++].Text = game.PlayersNames[i];
+            for (int i = game.MyIndex + 1; i < game.PlayersNames.Count; i++)
+                lstOponnentsLabels[lblIndex++].Text = game.PlayersNames[i];
         }
 
         private void InitOponnentsGrid(Grid grdOponnents)
