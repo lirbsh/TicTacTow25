@@ -22,7 +22,11 @@ namespace TicTacTow25.Models
         public DateTime Created { get; set; }
         public int TotalPlayers { get; set; }
         public int CurrentPlayers { get; set; } = 1;
+        public int NextPlay { get; set; } 
+        public string Message { get; set; } = Strings.Waiting;
         public List<string> PlayersNames { get; set; } = [];
+        [Ignored]
+        public string MyMessage { get; set; } = string.Empty;
         [Ignored]
         public string HostName => PlayersNames[0];
         public bool IsFull { get; set; }
@@ -34,5 +38,7 @@ namespace TicTacTow25.Models
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void JoinGame();
+        public abstract void SendMessage();
+        public abstract bool IsMyTurn();
     }
 }

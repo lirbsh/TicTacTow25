@@ -5,8 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:m="clr-namespace:TicTacTow25.Models"
     xmlns:vm="clr-namespace:TicTacTow25.ViewModels"
-    IsBusy="{Binding IsBusy}"
-    x:DataType="vm:AuthPageVM">
+    x:DataType="vm:AuthPageVM"
+    IsBusy="{Binding IsBusy}">
     <VerticalStackLayout Padding="7" Spacing="10">
         <Label
             Margin="20"

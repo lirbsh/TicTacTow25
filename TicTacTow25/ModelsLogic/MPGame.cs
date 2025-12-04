@@ -8,6 +8,7 @@ namespace TicTacTow25.ModelsLogic
         public MPGame(int totalPlayers)
         {
             TotalPlayers = totalPlayers;
+            NextPlay = totalPlayers - 1;
             Created = DateTime.Now;
             PlayersNames.Add(new User().Name);
         }
@@ -61,10 +62,28 @@ namespace TicTacTow25.ModelsLogic
             {
                 CurrentPlayers = game.CurrentPlayers;
                 PlayersNames = game.PlayersNames;
+                Message = game.Message;
+                NextPlay = game.NextPlay;
                 OnGameChanged?.Invoke(this, EventArgs.Empty);
             }
             else
                 OnGameDeleted?.Invoke(this, EventArgs.Empty);
+        }
+
+        public override void SendMessage()
+        {
+            NextPlay = (NextPlay + 1) % TotalPlayers;
+            Dictionary<string, object> dict = new()
+            {
+                { nameof(NextPlay), NextPlay },
+                { nameof(Message), MyMessage }
+            };
+            fbd.UpdateFields(Keys.MPGamesCollection, Id, dict, OnComplete);
+        }
+
+        public override bool IsMyTurn()
+        {
+            return NextPlay == MyIndex;
         }
     }
 }

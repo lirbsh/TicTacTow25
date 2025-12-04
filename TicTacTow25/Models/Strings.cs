@@ -23,5 +23,6 @@
         public const string MPGamesPageKey = "/MPGamesPage";
         public const string MainPageKey = "/MainPage";
         public const string Waiting = "Waiting...";
+        public const string SendMessage = "Send Message";
     }
 }

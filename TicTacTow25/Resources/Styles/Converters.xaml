@@ -6,4 +6,5 @@
     xmlns:cnv="clr-namespace:TicTacTow25.Converters">
     <cnv:BoolToIconConverter x:Key="passwordIconConvert" />
     <cnv:InvertBoolConverter x:Key="invertBoolConvert" />
+    <cnv:BoolToColorConverter x:Key="boolToColorConvert" />
 </ResourceDictionary>

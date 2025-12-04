@@ -27,8 +27,8 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
     <Style TargetType="Label">
-        <Setter Property="HorizontalOptions" Value="Center"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="TextColor" Value="Blue"/>
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="TextColor" Value="Blue" />
     </Style>
 </ResourceDictionary>
