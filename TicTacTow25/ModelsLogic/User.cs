@@ -12,13 +12,13 @@ namespace TicTacTow25.ModelsLogic
             CurrentAction= Actions.Register;
             fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
         }
-        public void Login()
+        public override void Login()
         {
             IsBusy = true;
             fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
         }
 
-        private void OnComplete(Task task)
+        protected override void OnComplete(Task task)
         {
             IsBusy = false;
             if (task.IsCompletedSuccessfully)
@@ -37,7 +37,7 @@ namespace TicTacTow25.ModelsLogic
                 ShowAlert(Strings.UnknownError);
         }
 
-        private void ShowAlert(string errMessage)
+        protected override void ShowAlert(string errMessage)
         {
             errMessage = fbd.GetErrorMessage(errMessage);
             MainThread.InvokeOnMainThreadAsync(() =>
@@ -48,7 +48,7 @@ namespace TicTacTow25.ModelsLogic
 
        
 
-        private void SaveToPreferences()
+        protected override void SaveToPreferences()
         {
             Preferences.Set(Keys.NameKey, Name);
             Preferences.Set(Keys.EmailKey, Email);
@@ -59,8 +59,6 @@ namespace TicTacTow25.ModelsLogic
         {
            return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email) && !IsBusy;
         }
-
-        
 
         public User()
         {

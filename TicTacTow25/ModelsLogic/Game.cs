@@ -31,14 +31,14 @@ namespace TicTacTow25.ModelsLogic
             Id = fbd.SetDocument(this, Keys.GamesCollection, Id, OnComplete);
         }
 
-        public void UpdateGuestUser(Action<Task> OnComplete)
+        public override void UpdateGuestUser(Action<Task> OnComplete)
         {
             IsFull = true;
             GuestName = MyName;
             UpdateFbJoinGame(OnComplete);
         }
 
-        private void UpdateFbJoinGame(Action<Task> OnComplete)
+        protected override void UpdateFbJoinGame(Action<Task> OnComplete)
         {
             Dictionary<string, object> dict = new()
             {
@@ -60,8 +60,7 @@ namespace TicTacTow25.ModelsLogic
             action = Actions.Deleted;
             DeleteDocument(OnComplete);
         }
-
-        private void OnComplete(Task task)
+        protected override void OnComplete(Task task)
         {
             if (task.IsCompletedSuccessfully)
                 if(action == Actions.Deleted)
@@ -69,9 +68,6 @@ namespace TicTacTow25.ModelsLogic
                 else
                     OnGameChanged?.Invoke(this, EventArgs.Empty);
         }
-
-        
-
         public override void DeleteDocument(Action<Task> OnComplete)
         {
             fbd.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
@@ -97,7 +93,6 @@ namespace TicTacTow25.ModelsLogic
                 }
 
         }
-
         protected override void OnButtonClicked(object? sender, EventArgs e)
         {
             if (_status.CurrentStatus == GameStatus.Statuses.Play)
@@ -134,7 +129,7 @@ namespace TicTacTow25.ModelsLogic
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
-        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
+        protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
         {
             Game? updatedGame = snapshot?.ToObject<Game>();
             if (updatedGame != null)

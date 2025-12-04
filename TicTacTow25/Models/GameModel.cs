@@ -44,9 +44,13 @@ namespace TicTacTow25.Models
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void Init(Grid board);
+        public abstract void UpdateGuestUser(Action<Task> OnComplete);
         protected abstract void UpdateStatus();
         protected abstract void OnButtonClicked(object? sender, EventArgs e);
         protected abstract void Play(int rowIndex, int columnIndex, bool MyMove);
         protected abstract void UpdateFbMove();
+        protected abstract void UpdateFbJoinGame(Action<Task> OnComplete);
+        protected abstract void OnComplete(Task task);
+        protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
     }
 }

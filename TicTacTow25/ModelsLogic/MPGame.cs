@@ -24,16 +24,13 @@ namespace TicTacTow25.ModelsLogic
         {
             ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, Id, OnChange);
         }
-
-      
-
         public override void RemoveSnapshotListener()
         {
             ilr?.Remove();
             DeleteDocument(OnComplete);
         }
 
-        private void OnComplete(Task task)
+        protected override void OnComplete(Task task)
         {
             
         }
@@ -55,7 +52,7 @@ namespace TicTacTow25.ModelsLogic
             fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(PlayersNames), PlayersNames);
             fbd.CommitBatch(OnComplete);
         }
-        private void OnChange(IDocumentSnapshot? snapshot, Exception? error)
+        protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
         {
             MPGame? game = snapshot?.ToObject<MPGame>();
             if (game != null)

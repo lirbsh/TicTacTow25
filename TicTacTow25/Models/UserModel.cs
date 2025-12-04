@@ -14,6 +14,10 @@ namespace TicTacTow25.Models
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public abstract void Register();
+        public abstract void Login();
         public abstract bool IsValid();
+        protected abstract void OnComplete(Task task);
+        protected abstract void ShowAlert(string errMessage);
+        protected abstract void SaveToPreferences();
     }
 }

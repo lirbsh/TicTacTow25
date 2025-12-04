@@ -40,5 +40,7 @@ namespace TicTacTow25.Models
         public abstract void JoinGame();
         public abstract void SendMessage();
         public abstract bool IsMyTurn();
+        protected abstract void OnComplete(Task task);
+        protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
     }
 }

@@ -18,18 +18,17 @@ namespace TicTacTow25.ModelsLogic
         {
             IsBusy = true;
             _currentGame = new(SelectedTotalPlayers);
-            
             _currentGame.OnGameDeleted += OnGameDeleted;
             _currentGame.SetDocument(OnComplete);
         }
-        private void OnGameDeleted(object? sender, EventArgs e)
+        protected override void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
             });
         }
-        private void OnComplete(Task task)
+        protected override void OnComplete(Task task)
         {
             IsBusy = false;
             if (task.IsCompletedSuccessfully)
@@ -42,12 +41,12 @@ namespace TicTacTow25.ModelsLogic
                 });
             }
         }
-        private void OnChange(IQuerySnapshot snapshot, Exception error)
+        protected override void OnChange(IQuerySnapshot snapshot, Exception error)
         {
             fbd.GetDocumentsWhereEqualTo(Keys.MPGamesCollection, nameof(MPGameModel.IsFull), false, OnComplete);
         }
 
-        private void OnComplete(IQuerySnapshot qs)
+        protected override void OnComplete(IQuerySnapshot qs)
         {
             GamesList!.Clear();
             //if(qs.Documents.Count() >0)
@@ -67,5 +66,4 @@ namespace TicTacTow25.ModelsLogic
             OnGamesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
-
 }
