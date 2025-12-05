@@ -62,7 +62,7 @@ namespace TicTacTow25.ViewModels
             for (int i = game.MyIndex + 1; i < game.PlayersNames.Count; i++)
             {
                 lstOponnentsLabels[lblIndex].Text = game.PlayersNames[i];
-                lstOponnentsLabels[lblIndex++].BackgroundColor = i == game.NextPlay ? Colors.Yellow : Colors.Cyan;
+                lstOponnentsLabels[lblIndex++].BackgroundColor = game.IsOponnentTurn(i)? Colors.Yellow : Colors.Cyan;
             }
         }
 

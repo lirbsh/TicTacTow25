@@ -82,5 +82,10 @@ namespace TicTacTow25.ModelsLogic
         {
             return NextPlay == MyIndex;
         }
+
+        public override bool IsOponnentTurn(int oponnentIndex)
+        {
+            return oponnentIndex == NextPlay;
+        }
     }
 }
