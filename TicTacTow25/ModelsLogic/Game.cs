@@ -13,12 +13,18 @@ namespace TicTacTow25.ModelsLogic
             HostName = new User().Name;
             IsHostUser = true;
             RowSize = selectedGameSize.Size;
+            InitBoard();
+            gameBoard = new string[RowSize, RowSize];
             Created = DateTime.Now;
             UpdateStatus();
         }
         public Game()
         {
             UpdateStatus();
+        }
+        public override void InitBoard()
+        {
+            gameBoard = new string[RowSize, RowSize];
         }
         protected override void UpdateStatus()
         {
@@ -39,34 +45,31 @@ namespace TicTacTow25.ModelsLogic
         {
             if (task.IsCompletedSuccessfully)
                 if (action == Actions.Deleted)
-                    OnGameDeleted?.Invoke(this, EventArgs.Empty);
+                    GameDeleted?.Invoke(this, EventArgs.Empty);
                 else
-                    OnGameChanged?.Invoke(this, EventArgs.Empty);
+                    GameChanged?.Invoke(this, EventArgs.Empty);
         }
-        protected override void OnButtonClicked(object? sender, EventArgs e)
+       
+        public override void Play(int rowIndex, int columnIndex, bool MyMove)
         {
-            if (_status.CurrentStatus == GameStatus.Statuses.Play)
-            {
-                IndexedButton? btn = sender as IndexedButton;
-                if (string.IsNullOrEmpty(btn!.Text))
-                    Play(btn!.RowIndex, btn.ColumnIndex, true);
-            }
-        }
-        protected override void Play(int rowIndex, int columnIndex, bool MyMove)
-        {
-            gameButtons![rowIndex, columnIndex].Text = nextPlay;
-            gameBoard![rowIndex, columnIndex] = nextPlay;
-            nextPlay = nextPlay == Strings.X ? Strings.O : Strings.X;
-            if (MyMove)
-            {
-                Move[0] = rowIndex;
-                Move[1] = columnIndex;
-                _status.UpdateStatus();
-                IsHostTurn = !IsHostTurn;
-                UpdateFbMove();
-            }
-            else
-                OnGameChanged?.Invoke(this, EventArgs.Empty);
+            if (string.IsNullOrEmpty(gameBoard![rowIndex, columnIndex]))
+                if (_status.CurrentStatus == GameStatus.Statuses.Play)
+                {
+                    DisplayMoveArgs args = new(rowIndex, columnIndex, nextPlay);
+                    DisplayChanged?.Invoke(this, args);
+                    gameBoard![rowIndex, columnIndex] = nextPlay;
+                    nextPlay = nextPlay == Strings.X ? Strings.O : Strings.X;
+                    if (MyMove)
+                    {
+                        Move[0] = rowIndex;
+                        Move[1] = columnIndex;
+                        _status.UpdateStatus();
+                        IsHostTurn = !IsHostTurn;
+                        UpdateFbMove();
+                    }
+                    else
+                        GameChanged?.Invoke(this, EventArgs.Empty);
+                }
         }
         protected override void UpdateFbMove()
         {
@@ -84,7 +87,7 @@ namespace TicTacTow25.ModelsLogic
             {
                 IsFull = updatedGame.IsFull;
                 GuestName = updatedGame.GuestName;
-                OnGameChanged?.Invoke(this, EventArgs.Empty);
+                GameChanged?.Invoke(this, EventArgs.Empty);
                 IsHostTurn = updatedGame.IsHostTurn;
                 UpdateStatus();
                 if (_status.CurrentStatus == GameStatus.Statuses.Play && updatedGame.Move[0] != Keys.NoMove)
@@ -122,25 +125,6 @@ namespace TicTacTow25.ModelsLogic
         public override void DeleteDocument(Action<Task> OnComplete)
         {
             fbd.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
-        }
-        public override void Init(Grid board)
-        {
-            gameBoard = new string[RowSize, RowSize];
-            gameButtons = new IndexedButton[RowSize, RowSize];
-            IndexedButton btn;
-            for (int i = 0; i < RowSize; i++)
-            {
-                board.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-                board.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            }
-            for (int i = 0; i < RowSize; i++)
-                for (int j = 0; j < RowSize; j++)
-                {
-                    btn = new IndexedButton(i, j);
-                    gameButtons[i, j] = btn;
-                    btn.Clicked += OnButtonClicked;
-                    board.Add(btn, j, i);
-                }
         }
     }
 }

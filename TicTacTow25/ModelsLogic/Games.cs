@@ -37,6 +37,7 @@ namespace TicTacTow25.ModelsLogic
                 if (game != null)
                 {
                     game.Id = ds.Id;
+                    game.InitBoard();
                     GamesList.Add(game);
                 }
             }
@@ -49,7 +50,7 @@ namespace TicTacTow25.ModelsLogic
             {
                 IsHostUser = true
             };
-            _currentGame.OnGameDeleted += OnGameDeleted;
+            _currentGame.GameDeleted += OnGameDeleted;
             _currentGame.SetDocument(OnComplete);
         }
         public override void AddSnapshotListener()

@@ -12,20 +12,18 @@ namespace TicTacTow25.Models
         protected IListenerRegistration? ilr;
         protected GameStatus _status = new();
         protected string[,]? gameBoard;
-        protected IndexedButton[,]? gameButtons;
         protected string nextPlay = Strings.X;
         protected abstract void UpdateStatus();
-        protected abstract void OnButtonClicked(object? sender, EventArgs e);
-        protected abstract void Play(int rowIndex, int columnIndex, bool MyMove);
         protected abstract void UpdateFbMove();
         protected abstract void UpdateFbJoinGame(Action<Task> OnComplete);
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
-
         [Ignored]
-        public EventHandler? OnGameChanged;
+        public EventHandler<DisplayMoveArgs>? DisplayChanged;
         [Ignored]
-        public EventHandler? OnGameDeleted;
+        public EventHandler? GameChanged;
+        [Ignored]
+        public EventHandler? GameDeleted;
         [Ignored]
         public string StatusMessage => _status.StatusMessage;
         [Ignored]
@@ -49,7 +47,8 @@ namespace TicTacTow25.Models
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
-        public abstract void Init(Grid board);
         public abstract void UpdateGuestUser(Action<Task> OnComplete);
+        public abstract void Play(int rowIndex, int columnIndex, bool MyMove);
+        public abstract void InitBoard();
     }
 }
