@@ -6,18 +6,20 @@ namespace TicTacTow25.ModelsLogic
 {
     public class User : UserModel
     {
-        public override void Register()
+        protected override void ShowAlert(string errMessage)
         {
-            IsBusy = true;
-            CurrentAction= Actions.Register;
-            fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
+            errMessage = fbd.GetErrorMessage(errMessage);
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Toast.Make(errMessage, ToastDuration.Long).Show();
+            });
         }
-        public override void Login()
+        protected override void SaveToPreferences()
         {
-            IsBusy = true;
-            fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
+            Preferences.Set(Keys.NameKey, Name);
+            Preferences.Set(Keys.EmailKey, Email);
+            Preferences.Set(Keys.PasswordKey, Password);
         }
-
         protected override void OnComplete(Task task)
         {
             IsBusy = false;
@@ -36,35 +38,26 @@ namespace TicTacTow25.ModelsLogic
             else
                 ShowAlert(Strings.UnknownError);
         }
-
-        protected override void ShowAlert(string errMessage)
-        {
-            errMessage = fbd.GetErrorMessage(errMessage);
-            MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                Toast.Make(errMessage, ToastDuration.Long).Show();
-            });
-        }
-
-       
-
-        protected override void SaveToPreferences()
-        {
-            Preferences.Set(Keys.NameKey, Name);
-            Preferences.Set(Keys.EmailKey, Email);
-            Preferences.Set(Keys.PasswordKey, Password);
-        }
-
-        public override bool IsValid()
-        {
-           return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email) && !IsBusy;
-        }
-
         public User()
         {
             Name = Preferences.Get(Keys.NameKey, string.Empty);
             Email = Preferences.Get(Keys.EmailKey, string.Empty);
             Password = Preferences.Get(Keys.PasswordKey, string.Empty);
+        }
+        public override void Register()
+        {
+            IsBusy = true;
+            CurrentAction= Actions.Register;
+            fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
+        }
+        public override void Login()
+        {
+            IsBusy = true;
+            fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
+        }
+        public override bool IsValid()
+        {
+           return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(Email) && !IsBusy;
         }
     }
 }

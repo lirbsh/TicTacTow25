@@ -5,6 +5,24 @@ namespace TicTacTow25.ModelsLogic
 {
     public class MPGame:MPGameModel
     {
+        protected override void OnComplete(Task task)
+        {
+
+        }
+        protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
+        {
+            MPGame? game = snapshot?.ToObject<MPGame>();
+            if (game != null)
+            {
+                CurrentPlayers = game.CurrentPlayers;
+                PlayersNames = game.PlayersNames;
+                Message = game.Message;
+                NextPlay = game.NextPlay;
+                OnGameChanged?.Invoke(this, EventArgs.Empty);
+            }
+            else
+                OnGameDeleted?.Invoke(this, EventArgs.Empty);
+        }
         public MPGame(int totalPlayers)
         {
             TotalPlayers = totalPlayers;
@@ -29,16 +47,9 @@ namespace TicTacTow25.ModelsLogic
             ilr?.Remove();
             DeleteDocument(OnComplete);
         }
-
-        protected override void OnComplete(Task task)
-        {
-            
-        }
-
         public override void DeleteDocument(Action<Task> OnComplete)
         {
             fbd.DeleteDocument(Keys.MPGamesCollection, Id, OnComplete);
-
         }
 
         public override void JoinGame()
@@ -51,20 +62,6 @@ namespace TicTacTow25.ModelsLogic
             fbd.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
             fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(PlayersNames), PlayersNames);
             fbd.CommitBatch(OnComplete);
-        }
-        protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
-        {
-            MPGame? game = snapshot?.ToObject<MPGame>();
-            if (game != null)
-            {
-                CurrentPlayers = game.CurrentPlayers;
-                PlayersNames = game.PlayersNames;
-                Message = game.Message;
-                NextPlay = game.NextPlay;
-                OnGameChanged?.Invoke(this, EventArgs.Empty);
-            }
-            else
-                OnGameDeleted?.Invoke(this, EventArgs.Empty);
         }
 
         public override void SendMessage()

@@ -21,7 +21,6 @@ namespace TicTacTow25.ModelsLogic
             dr.SetAsync(obj).ContinueWith(OnComplete);
             return dr.Id;
         }
-
         public override string GetErrorMessage(string errMessage)
         {
             string retMessage;
@@ -68,13 +67,11 @@ namespace TicTacTow25.ModelsLogic
             IDocumentReference dr = fs.Collection(collectonName).Document(id);
             await dr.UpdateAsync(dict).ContinueWith(OnComplete);
         }
-
         public override async void DeleteDocument(string collectonName, string id,  Action<Task> OnComplete)
         {
             IDocumentReference dr = fs.Collection(collectonName).Document(id);
             await dr.DeleteAsync().ContinueWith(OnComplete);
         }
-
         public override async void UpdateField(string collectonName, string id, string fieldName, object fieldValue, Action<Task> OnComplete)
         {
             IDocumentReference dr = fs.Collection(collectonName).Document(id);

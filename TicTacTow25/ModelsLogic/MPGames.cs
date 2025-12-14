@@ -6,27 +6,16 @@ namespace TicTacTow25.ModelsLogic
 {
     public class MPGames:MPGamesModel
     {
-        public override void AddSnapshotListener()
-        {
-            ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, OnChange!);
-        }
-        public override void RemoveSnapshotListener()
-        {
-            ilr?.Remove();
-        }
-        public override void AddGame()
-        {
-            IsBusy = true;
-            _currentGame = new(SelectedTotalPlayers);
-            _currentGame.OnGameDeleted += OnGameDeleted;
-            _currentGame.SetDocument(OnComplete);
-        }
         protected override void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
             });
+        }
+        protected override void OnChange(IQuerySnapshot snapshot, Exception error)
+        {
+            fbd.GetDocumentsWhereEqualTo(Keys.MPGamesCollection, nameof(MPGameModel.IsFull), false, OnComplete);
         }
         protected override void OnComplete(Task task)
         {
@@ -41,11 +30,6 @@ namespace TicTacTow25.ModelsLogic
                 });
             }
         }
-        protected override void OnChange(IQuerySnapshot snapshot, Exception error)
-        {
-            fbd.GetDocumentsWhereEqualTo(Keys.MPGamesCollection, nameof(MPGameModel.IsFull), false, OnComplete);
-        }
-
         protected override void OnComplete(IQuerySnapshot qs)
         {
             GamesList!.Clear();
@@ -64,6 +48,21 @@ namespace TicTacTow25.ModelsLogic
                 }
             }
             OnGamesChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public override void AddSnapshotListener()
+        {
+            ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, OnChange!);
+        }
+        public override void RemoveSnapshotListener()
+        {
+            ilr?.Remove();
+        }
+        public override void AddGame()
+        {
+            IsBusy = true;
+            _currentGame = new(SelectedTotalPlayers);
+            _currentGame.OnGameDeleted += OnGameDeleted;
+            _currentGame.SetDocument(OnComplete);
         }
     }
 }

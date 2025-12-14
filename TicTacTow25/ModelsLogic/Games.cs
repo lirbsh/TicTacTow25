@@ -6,16 +6,6 @@ namespace TicTacTow25.ModelsLogic
 {
     public class Games : GamesModel
     {
-        public override void AddGame()
-        {
-            IsBusy = true;
-            _currentGame = new(SelectedGameSize)
-            {
-                IsHostUser = true
-            };
-            _currentGame.OnGameDeleted += OnGameDeleted;
-            _currentGame.SetDocument(OnComplete);
-        }
         protected override void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
@@ -23,20 +13,10 @@ namespace TicTacTow25.ModelsLogic
                 Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
             });
         }
-
         protected override void OnComplete(Task task)
         {
             IsBusy = false;
             OnGameAdded?.Invoke(this, _currentGame!);
-        }
-        
-        public override void AddSnapshotListener()
-        {
-            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, OnChange!);
-        }
-        public override void RemoveSnapshotListener()
-        {
-            ilr?.Remove();
         }
         protected override void OnChange(IQuerySnapshot snapshot, Exception error)
         {
@@ -61,6 +41,24 @@ namespace TicTacTow25.ModelsLogic
                 }
             }
             OnGamesChanged?.Invoke(this, EventArgs.Empty);
+        }
+        public override void AddGame()
+        {
+            IsBusy = true;
+            _currentGame = new(SelectedGameSize)
+            {
+                IsHostUser = true
+            };
+            _currentGame.OnGameDeleted += OnGameDeleted;
+            _currentGame.SetDocument(OnComplete);
+        }
+        public override void AddSnapshotListener()
+        {
+            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, OnChange!);
+        }
+        public override void RemoveSnapshotListener()
+        {
+            ilr?.Remove();
         }
     }
 }
