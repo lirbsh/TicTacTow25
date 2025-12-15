@@ -36,7 +36,6 @@ namespace TicTacTow25.ViewModels
                 }
             }
         }
-        
         public string Password
         {
             get => user.Password;
@@ -57,9 +56,6 @@ namespace TicTacTow25.ViewModels
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
             user.OnAuthComplete += OnAuthComplete;
         }
-
-       
-
         private void OnAuthComplete(object? sender, bool success)
         {
             
@@ -79,7 +75,6 @@ namespace TicTacTow25.ViewModels
                 OnPropertyChanged(nameof(IsBusy));
             }
         }
-
         private bool CanAuth()
         {
             return user.IsValid() ;
@@ -102,7 +97,6 @@ namespace TicTacTow25.ViewModels
                 (AuthCommand as Command)?.ChangeCanExecute();
             }
         }
-
         private void ToggleIsPassword()
         {
             IsPassword = !IsPassword;

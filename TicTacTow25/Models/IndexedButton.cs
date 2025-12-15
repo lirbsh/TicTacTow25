@@ -1,6 +1,6 @@
 ﻿namespace TicTacTow25.Models
 {
-    public class IndexedButton:Button
+    public partial class IndexedButton : Button
     {
         public int RowIndex { get; set; } 
         public int ColumnIndex { get; set; } 

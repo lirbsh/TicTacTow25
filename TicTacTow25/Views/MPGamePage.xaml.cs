@@ -1,8 +1,6 @@
 using TicTacTow25.ModelsLogic;
 using TicTacTow25.ViewModels;
-
 namespace TicTacTow25.Views;
-
 public partial class MPGamePage : ContentPage
 {
     private object? SOToRestore { get; set; }
@@ -26,14 +24,12 @@ public partial class MPGamePage : ContentPage
         }
 #endif
     }
-
     protected override void OnDisappearing()
     {
         mpgpVM.RemoveSnapshotListener();
 #if ANDROID
         if (Platform.CurrentActivity != null)
             if (SOToRestore is Android.Content.PM.ScreenOrientation SO) Platform.CurrentActivity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
-
 #endif
         base.OnDisappearing();
     }

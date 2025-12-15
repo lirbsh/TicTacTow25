@@ -28,7 +28,6 @@ namespace TicTacTow25.ModelsLogic
         {
             OnButtonClicked?.Invoke(this, (IndexedButton)sender! );
         }
-
         internal void UpdateDisplay(DisplayMoveArgs e)
         {
             gameButtons![e.RowIndex, e.ColumnIndex].Text = e.Symbol;

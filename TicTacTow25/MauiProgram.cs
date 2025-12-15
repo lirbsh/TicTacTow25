@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-
 namespace TicTacTow25
 {
     public static class MauiProgram
@@ -17,11 +16,9 @@ namespace TicTacTow25
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("MaterialSymbolsOutlined.ttf", "MaterialSymbols");
                 });
-
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
             return builder.Build();
         }
     }

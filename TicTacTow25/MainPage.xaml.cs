@@ -15,12 +15,10 @@ namespace TicTacTow25
             base.OnAppearing();
             mpVM.AddSnapshotListener();
         }
-
         protected override void OnDisappearing()
         {
             mpVM.RemoveSnapshotListener();
             base.OnDisappearing();
         }
     }
-
 }

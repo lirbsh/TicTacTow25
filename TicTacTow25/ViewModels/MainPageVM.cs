@@ -10,15 +10,6 @@ namespace TicTacTow25.ViewModels
     {
         private readonly Games games = new();
         public ICommand AddGameCommand { get; } 
-
-        private void AddGame()
-        {
-            if (!IsBusy)
-            {
-                games.AddGame();
-                OnPropertyChanged(nameof(IsBusy));
-            }
-        }
         public bool IsBusy => games.IsBusy;
         public  ObservableCollection<GameSize>? GameSizes { get => games.GameSizes; set => games.GameSizes = value; }
         public GameSize SelectedGameSize { get => games.SelectedGameSize; set => games.SelectedGameSize = value; }
@@ -39,16 +30,20 @@ namespace TicTacTow25.ViewModels
                 }
             }
         }
-
-       
-      
         public MainPageVM()
         {
             AddGameCommand = new Command(AddGame);
             games.OnGameAdded += OnGameAdded;
             games.OnGamesChanged += OnGamesChanged;
         }
-
+        private void AddGame()
+        {
+            if (!IsBusy)
+            {
+                games.AddGame();
+                OnPropertyChanged(nameof(IsBusy));
+            }
+        }
         private void OnGamesChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(GamesList));
@@ -66,7 +61,6 @@ namespace TicTacTow25.ViewModels
         {
             games.AddSnapshotListener();
         }
-
         public void RemoveSnapshotListener()
         {
             games.RemoveSnapshotListener();

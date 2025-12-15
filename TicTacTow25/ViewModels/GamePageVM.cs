@@ -8,7 +8,6 @@ namespace TicTacTow25.ViewModels
     {
         private readonly GameGrid grdBoard = [];
         private readonly Game game;
-
         public string MyName => game.MyName;
         public string StatusMessage => game.StatusMessage;
         public string OpponentName => game.OpponentName;
@@ -22,35 +21,28 @@ namespace TicTacTow25.ViewModels
             if (!game.IsHostUser)
                 game.UpdateGuestUser(OnComplete);
         }
-
         private void OnDisplayChanged(object? sender, DisplayMoveArgs e)
         {
             grdBoard.UpdateDisplay(e);
         }
-
         private void OnButtonClicked(object? sender, IndexedButton e)
         {
             game.Play(e.RowIndex, e.ColumnIndex, true);
         }
-
         private void OnGameChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(OpponentName));
             OnPropertyChanged(nameof(StatusMessage));
         }
-
         private void OnComplete(Task task)
         {
             if(!task.IsCompletedSuccessfully)
                 Toast.Make(Strings.JoinGameErr, CommunityToolkit.Maui.Core.ToastDuration.Long, 14);
-                    
         }
-
         public void AddSnapshotListener()
         {
             game.AddSnapshotListener();
         }
-
         public void RemoveSnapshotListener()
         {
             game.RemoveSnapshotListener();

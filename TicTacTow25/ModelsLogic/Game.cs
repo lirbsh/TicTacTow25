@@ -16,10 +16,7 @@ namespace TicTacTow25.ModelsLogic
             RowSize = selectedGameSize.Size;
             InitBoardAndStatus();
         }
-        public Game()
-        {
-           
-        }
+        public Game() { }
         public override void InitBoardAndStatus()
         {
             gameBoard = new string[RowSize, RowSize];

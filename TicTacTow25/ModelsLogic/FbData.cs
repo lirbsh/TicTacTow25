@@ -1,5 +1,4 @@
-﻿using Android.Gms.Common.Apis;
-using Plugin.CloudFirestore;
+﻿using Plugin.CloudFirestore;
 using System.Text.RegularExpressions;
 using TicTacTow25.Models;
 
@@ -81,7 +80,6 @@ namespace TicTacTow25.ModelsLogic
         {
             batch = fs.Batch();
         }
-
         public override void BatchUpdateField(string collectonName, string id, string fName, object fValue)
         {
             IDocumentReference dr = fs.Collection(collectonName).Document(id);

@@ -1,7 +1,5 @@
 using TicTacTow25.ViewModels;
-
 namespace TicTacTow25.Views;
-
 public partial class MPGamesPage : ContentPage
 {
 	private MPGamesPageVM mpgpVM = new();

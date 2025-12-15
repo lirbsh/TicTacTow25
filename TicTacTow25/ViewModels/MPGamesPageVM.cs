@@ -6,7 +6,7 @@ using TicTacTow25.Views;
 
 namespace TicTacTow25.ViewModels
 {
-    internal class MPGamesPageVM : ObservableObject
+    internal partial class MPGamesPageVM : ObservableObject
     {
         private readonly MPGames mpGames = new();
         public ICommand AddGameCommand { get; } 
@@ -56,7 +56,6 @@ namespace TicTacTow25.ViewModels
         {
             OnPropertyChanged(nameof(GamesList));
         }
-
         private void OnGameAdded(object? sender, MPGame game)
         {
             OnPropertyChanged(nameof(IsBusy));
@@ -73,12 +72,10 @@ namespace TicTacTow25.ViewModels
                 OnPropertyChanged(nameof(IsBusy));
             }
         }
-
         internal void AddSnapshotListener()
         {
             mpGames.AddSnapshotListener();
         }
-
         internal void RemoveSnapshotListener()
         {
             mpGames.RemoveSnapshotListener();

@@ -14,7 +14,6 @@ namespace TicTacTow25.ViewModels
         public string MyMessage { get => game.MyMessage; set => game.MyMessage = value; }
         public bool IsMyTurn => game.IsMyTurn();
         public ICommand SendMessageCommand { get; }
-
         public MPGamePageVM(MPGame game,Grid grdOponnents)
         {
             this.game = game;
@@ -23,17 +22,14 @@ namespace TicTacTow25.ViewModels
             SendMessageCommand = new Command(SendMessage,CanSendMessage);
             InitOponnentsGrid(grdOponnents);
         }
-
-       private bool CanSendMessage()
+        private bool CanSendMessage()
         {
             return IsMyTurn;
         }
-
         private void SendMessage()
         {
             game.SendMessage();
         }
-
         private void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
@@ -42,7 +38,6 @@ namespace TicTacTow25.ViewModels
                 Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
             });
         }
-
         private void OnGameChanged(object? sender, EventArgs e)
         {
             DisplayOponnentsNames();
@@ -50,7 +45,6 @@ namespace TicTacTow25.ViewModels
             OnPropertyChanged(nameof(Message));
             OnPropertyChanged(nameof(IsMyTurn));
         }
-
         private void DisplayOponnentsNames()
         {
             int lblIndex = 0;
@@ -65,7 +59,6 @@ namespace TicTacTow25.ViewModels
                 lstOponnentsLabels[lblIndex++].BackgroundColor = game.IsOponnentTurn(i)? Colors.Yellow : Colors.Cyan;
             }
         }
-
         private void InitOponnentsGrid(Grid grdOponnents)
         {
             int oponnentsCount = game.TotalPlayers - 1;
@@ -82,12 +75,10 @@ namespace TicTacTow25.ViewModels
                 grdOponnents.Add(lstOponnentsLabels[i], i, 0);
             }
         }
-
         internal void AddSnapshotListener()
         {
             game.AddSnapshotListener();
         }
-
         internal void RemoveSnapshotListener()
         {
             game.RemoveSnapshotListener();

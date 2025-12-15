@@ -22,7 +22,6 @@ namespace TicTacTow25.ModelsLogic
         {
             fbd.GetDocumentsWhereEqualTo(Keys.GamesCollection, nameof(GameModel.IsFull), false, OnComplete);
         }
-
         protected override void OnComplete(IQuerySnapshot qs)
         {
             GamesList!.Clear();

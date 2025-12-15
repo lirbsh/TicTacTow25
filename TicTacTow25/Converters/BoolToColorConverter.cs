@@ -12,7 +12,6 @@ namespace TicTacTow25.Converters
                 color = Colors.Yellow;
             return color;
         }
-
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return null;

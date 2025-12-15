@@ -5,9 +5,18 @@ namespace TicTacTow25.ModelsLogic
 {
     public class MPGame:MPGameModel
     {
+        public override string JoinStatus => CurrentPlayers + "/" + TotalPlayers;
+        public MPGame(int totalPlayers)
+        {
+            TotalPlayers = totalPlayers;
+            NextPlay = totalPlayers - 1;
+            Created = DateTime.Now;
+            PlayersNames.Add(new User().Name);
+        }
+        public MPGame() { }
         protected override void OnComplete(Task task)
         {
-
+            //code for handeling completion of tasks if needed
         }
         protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
         {
@@ -23,17 +32,6 @@ namespace TicTacTow25.ModelsLogic
             else
                 OnGameDeleted?.Invoke(this, EventArgs.Empty);
         }
-        public MPGame(int totalPlayers)
-        {
-            TotalPlayers = totalPlayers;
-            NextPlay = totalPlayers - 1;
-            Created = DateTime.Now;
-            PlayersNames.Add(new User().Name);
-        }
-        public MPGame() { }
-
-        public override string JoinStatus => CurrentPlayers + "/" + TotalPlayers;
-
         public override void SetDocument(Action<Task> OnComplete)
         {
             Id = fbd.SetDocument(this, Keys.MPGamesCollection, Id, OnComplete);
@@ -63,7 +61,6 @@ namespace TicTacTow25.ModelsLogic
             fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(PlayersNames), PlayersNames);
             fbd.CommitBatch(OnComplete);
         }
-
         public override void SendMessage()
         {
             NextPlay = (NextPlay + 1) % TotalPlayers;
@@ -74,12 +71,10 @@ namespace TicTacTow25.ModelsLogic
             };
             fbd.UpdateFields(Keys.MPGamesCollection, Id, dict, OnComplete);
         }
-
         public override bool IsMyTurn()
         {
             return NextPlay == MyIndex;
         }
-
         public override bool IsOponnentTurn(int oponnentIndex)
         {
             return oponnentIndex == NextPlay;
