@@ -10,21 +10,20 @@ namespace TicTacTow25.ModelsLogic
 
         public Game(GameSize selectedGameSize)
         {
+            Created = DateTime.Now;
             HostName = new User().Name;
             IsHostUser = true;
             RowSize = selectedGameSize.Size;
-            InitBoard();
-            gameBoard = new string[RowSize, RowSize];
-            Created = DateTime.Now;
-            UpdateStatus();
+            InitBoardAndStatus();
         }
         public Game()
         {
-            UpdateStatus();
+           
         }
-        public override void InitBoard()
+        public override void InitBoardAndStatus()
         {
             gameBoard = new string[RowSize, RowSize];
+            UpdateStatus();
         }
         protected override void UpdateStatus()
         {
@@ -63,7 +62,7 @@ namespace TicTacTow25.ModelsLogic
                     {
                         Move[0] = rowIndex;
                         Move[1] = columnIndex;
-                        _status.UpdateStatus();
+                        _status.ChangeStatus();
                         IsHostTurn = !IsHostTurn;
                         UpdateFbMove();
                     }

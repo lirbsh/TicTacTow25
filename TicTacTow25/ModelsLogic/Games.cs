@@ -37,7 +37,7 @@ namespace TicTacTow25.ModelsLogic
                 if (game != null)
                 {
                     game.Id = ds.Id;
-                    game.InitBoard();
+                    game.InitBoardAndStatus();
                     GamesList.Add(game);
                 }
             }

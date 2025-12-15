@@ -49,6 +49,6 @@ namespace TicTacTow25.Models
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void UpdateGuestUser(Action<Task> OnComplete);
         public abstract void Play(int rowIndex, int columnIndex, bool MyMove);
-        public abstract void InitBoard();
+        public abstract void InitBoardAndStatus();
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace TicTacTow25.Models
+﻿namespace TicTacTow25.Models
 {
     public class GameStatus
     {
@@ -8,8 +6,7 @@ namespace TicTacTow25.Models
         public enum Statuses { Wait, Play }
         public Statuses CurrentStatus { get; set; } = Statuses.Wait;
         public string StatusMessage => msgs[(int)CurrentStatus];
-
-        public void UpdateStatus()
+        public void ChangeStatus()
         {
             CurrentStatus = CurrentStatus==Statuses.Play ? Statuses.Wait : Statuses.Play;
         }
