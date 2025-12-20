@@ -86,7 +86,7 @@ namespace TicTacTow25.ModelsLogic
             batch?.Update(dr, fName, fValue);
         }
         public override void BatchIncrementField(string collectonName, string id, string fName, long incrementBy)
-        {
+        { 
             IDocumentReference dr = fs.Collection(collectonName).Document(id);
             batch?.Update(dr, fName, FieldValue.Increment(incrementBy));
         }

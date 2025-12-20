@@ -15,7 +15,7 @@ namespace TicTacTow25.ViewModels
         {
             game.GameChanged += OnGameChanged;
             game.DisplayChanged += OnDisplayChanged;
-            grdBoard.Init(board, game.RowSize);
+            grdBoard.Init(board, game.RowSize, 70,Colors.Blue);
             grdBoard.OnButtonClicked += OnButtonClicked;
             this.game = game;
             if (!game.IsHostUser)

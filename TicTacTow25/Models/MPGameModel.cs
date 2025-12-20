@@ -6,15 +6,14 @@ namespace TicTacTow25.Models
 {
     public abstract class MPGameModel
     {
+        protected readonly Color[] playerColors = [ Colors.Cyan, Colors.Magenta, Colors.Green, Colors.Orange ];
         protected IListenerRegistration? ilr;
 
         protected FbData fbd = new();
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
 
-        [Ignored]
-        public int MyIndex { get; protected set; } = 0;
-        [Ignored]
+           [Ignored]
         public EventHandler? OnGameChanged;
         [Ignored]
         public EventHandler? OnGameDeleted;
@@ -25,23 +24,21 @@ namespace TicTacTow25.Models
         [Ignored]
         public string MyMessage { get; set; } = string.Empty;
         [Ignored]
-        public string HostName => PlayersNames[0];
-        public bool IsFull { get; set; }
+        public string HostName => Players.GetPlayerName(0);
         [Ignored]
-        public DateTime Created { get; set; }
-        public int TotalPlayers { get; set; }
-        public int CurrentPlayers { get; set; } = 1;
-        public int NextPlay { get; set; } 
-        public string Message { get; set; } = Strings.Waiting;
-        public List<string> PlayersNames { get; set; } = [];
         public abstract string JoinStatus { get; }
+        public bool IsFull { get; set; }
+        public DateTime Created { get; set; }
+        public int CurrentPlayers { get; set; } = 1;
+        public string Message { get; set; } = Strings.Waiting;
+        public Players Players { get; set; } = new();
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
         public abstract void JoinGame();
         public abstract void SendMessage();
         public abstract bool IsMyTurn();
-        public abstract bool IsOponnentTurn(int oponnentIndex);
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract Color GetPlayerColor(int playerIndex);
     }
 }

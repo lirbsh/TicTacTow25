@@ -7,4 +7,11 @@ public partial class AuthPage : ContentPage
 		InitializeComponent();
 		BindingContext = new AuthPageVM();
     }
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+#if ANDROID
+        Platform.CurrentActivity!.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
+#endif   
+    }
 }

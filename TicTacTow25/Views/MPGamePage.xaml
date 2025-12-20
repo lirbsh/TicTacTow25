@@ -9,25 +9,29 @@
     x:DataType="vm:MPGamePageVM">
     <VerticalStackLayout>
         <Grid x:Name="grdOponnents" />
-        <Label
-            Margin="0,1,0,1"
+        <Grid
+            x:Name="grdBoard"
+            ColumnSpacing="1"
             HorizontalOptions="Center"
-            Text="{Binding Message}" />
+            RowSpacing="1" />
+
+        <Label HorizontalOptions="Center" Text="{Binding Message}" />
         <BoxView BackgroundColor="Blue" HeightRequest="1" />
         <Entry
-            Margin="0,2,0,0"
             HorizontalOptions="Center"
             Placeholder="Enter Your Message"
             Text="{Binding MyMessage}" />
         <Button
-            Margin="0,1,0,0"
             Command="{Binding SendMessageCommand}"
+            FontSize="12"
+            HeightRequest="35"
             HorizontalOptions="Center"
             Text="{x:Static m:Strings.SendMessage}" />
         <Label
-            Margin="0,10,0,0"
-            Padding="12"
+            Margin="1"
+            Padding="1"
             BackgroundColor="{Binding IsMyTurn, Converter={StaticResource boolToColorConvert}}"
+            FontSize="14"
             HorizontalOptions="Center"
             Text="{Binding MyName}"
             VerticalOptions="Center"

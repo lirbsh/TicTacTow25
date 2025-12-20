@@ -4,8 +4,9 @@
     {
         protected int rowSize;
         protected IndexedButton[,]? gameButtons;
-        protected abstract void OnMyButtonClicked(object? sender, EventArgs e);
-        public abstract void Init(Grid bord, int rowSize);
         public EventHandler<IndexedButton>? OnButtonClicked;
+        protected abstract void OnMyButtonClicked(object? sender, EventArgs e);
+        public abstract void Init(Grid bord, int rowSize, int size, Color color);
+        public abstract void UpdateButton(Position pos, Color color);
     }
 }

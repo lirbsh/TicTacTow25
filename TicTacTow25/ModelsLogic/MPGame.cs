@@ -5,13 +5,15 @@ namespace TicTacTow25.ModelsLogic
 {
     public class MPGame:MPGameModel
     {
-        public override string JoinStatus => CurrentPlayers + "/" + TotalPlayers;
+        public override string JoinStatus => CurrentPlayers + "/" + Players.TotalPlayers;
         public MPGame(int totalPlayers)
         {
-            TotalPlayers = totalPlayers;
-            NextPlay = totalPlayers - 1;
+            
             Created = DateTime.Now;
-            PlayersNames.Add(new User().Name);
+            Player p = new(new User().Name);
+            Players.Add(p);
+            Players.TotalPlayers = totalPlayers;
+            Players.NextPlay = totalPlayers - 1;
         }
         public MPGame() { }
         protected override void OnComplete(Task task)
@@ -24,9 +26,10 @@ namespace TicTacTow25.ModelsLogic
             if (game != null)
             {
                 CurrentPlayers = game.CurrentPlayers;
-                PlayersNames = game.PlayersNames;
+                int myIndex = Players.MyIndex;
+                Players = game.Players;
+                Players.MyIndex = myIndex;
                 Message = game.Message;
-                NextPlay = game.NextPlay;
                 OnGameChanged?.Invoke(this, EventArgs.Empty);
             }
             else
@@ -52,32 +55,36 @@ namespace TicTacTow25.ModelsLogic
 
         public override void JoinGame()
         {
-            if (CurrentPlayers + 1 == TotalPlayers)
+            if (CurrentPlayers + 1 == Players.TotalPlayers)
                 fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(IsFull), true, OnComplete);
-            MyIndex = CurrentPlayers;
-            PlayersNames.Add(MyName);
+            Players.MyIndex = CurrentPlayers;
+            Console.WriteLine("####My Index: " + Players.MyIndex);
+            Player p = new(MyName);
+            Players.Add(p);
             fbd.StartBatch();
             fbd.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
-            fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(PlayersNames), PlayersNames);
+            fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players);
             fbd.CommitBatch(OnComplete);
         }
         public override void SendMessage()
         {
-            NextPlay = (NextPlay + 1) % TotalPlayers;
+            Players.SetNextPlayer();
             Dictionary<string, object> dict = new()
             {
-                { nameof(NextPlay), NextPlay },
+                { nameof(Players), Players },
                 { nameof(Message), MyMessage }
             };
             fbd.UpdateFields(Keys.MPGamesCollection, Id, dict, OnComplete);
         }
         public override bool IsMyTurn()
         {
-            return NextPlay == MyIndex;
+            return Players.IsMyTurn();
         }
-        public override bool IsOponnentTurn(int oponnentIndex)
+       
+
+        public override Color GetPlayerColor(int playerIndex)
         {
-            return oponnentIndex == NextPlay;
+            return playerColors[playerIndex % playerColors.Length];
         }
     }
 }

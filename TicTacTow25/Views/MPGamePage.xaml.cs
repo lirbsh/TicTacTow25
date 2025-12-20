@@ -8,9 +8,8 @@ public partial class MPGamePage : ContentPage
     public MPGamePage(MPGame game)
 	{
         InitializeComponent();
-        mpgpVM = new MPGamePageVM(game, grdOponnents);
+        mpgpVM = new MPGamePageVM(game, grdOponnents, grdBoard);
 		BindingContext = mpgpVM;
-
     }
     protected override void OnAppearing()
     {
