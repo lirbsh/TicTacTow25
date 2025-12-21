@@ -50,5 +50,6 @@ namespace TicTacTow25.Models
         public abstract Color GetPlayerColor(int playerIndex);
         public abstract string GetPlayerName(int playerIndex);
         public abstract bool IsOponnentTurn(int playerIndex);
+        public abstract void Play(int rowIndex, int columnIndex);
     }
 }

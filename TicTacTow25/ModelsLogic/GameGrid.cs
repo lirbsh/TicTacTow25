@@ -20,9 +20,15 @@ namespace TicTacTow25.ModelsLogic
                 {
                     btn = new IndexedButton(i, j, size,color);
                     gameButtons[i, j] = btn;
-                    btn.Clicked += OnMyButtonClicked;
+                    btn.Clicked += OnButtonClicked;
                     ((Grid)this.Parent).Add(btn, j, i);
                 }
+        }
+
+        public override void RestoreColors()
+        {
+            foreach (IndexedButton btn in gameButtons!)
+                btn.RestoreColor();
         }
 
         public override void UpdateButton(Position pos, Color color)
@@ -30,9 +36,9 @@ namespace TicTacTow25.ModelsLogic
             gameButtons![pos.Row, pos.Column].BackgroundColor = color;
         }
 
-        protected override void OnMyButtonClicked(object? sender, EventArgs e)
+        protected override void OnButtonClicked(object? sender, EventArgs e)
         {
-            OnButtonClicked?.Invoke(this, (IndexedButton)sender! );
+            ButtonClicked?.Invoke(this, (IndexedButton)sender! );
         }
         internal void UpdateDisplay(DisplayMoveArgs e)
         {

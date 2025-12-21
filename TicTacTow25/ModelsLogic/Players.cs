@@ -27,5 +27,9 @@ namespace TicTacTow25.ModelsLogic
         {
             return oponnentIndex == NextPlay;
         }
+        public override void Play(int rowIndex, int columnIndex)
+        {
+            PlayersList[MyIndex].Position = new Position(rowIndex, columnIndex);
+        }
     }
 }

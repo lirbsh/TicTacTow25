@@ -99,5 +99,11 @@ namespace TicTacTow25.ModelsLogic
         {
            return Players.IsOponnentTurn(playerIndex);
         }
+
+        public override void Play(int rowIndex, int columnIndex)
+        {
+            Players.Play(rowIndex, columnIndex);
+            fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players, OnComplete);
+        }
     }
 }

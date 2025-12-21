@@ -16,15 +16,22 @@ namespace TicTacTow25.ViewModels
         public string MyMessage { get => game.MyMessage; set => game.MyMessage = value; }
         public bool IsMyTurn => game.IsMyTurn();
         public ICommand SendMessageCommand { get; }
+
         public MPGamePageVM(MPGame game,Grid grdOponnents, Grid grdBoard)
         {
             this.game = game;
             this.grdBoard.Init(grdBoard, 5, 15,Colors.Cyan);
+            this.grdBoard.ButtonClicked += OnButtonClicked;
             game.GameChanged += OnGameChanged;
             game.GameDeleted += OnGameDeleted;
             game.GameError += OnGameError;
             SendMessageCommand = new Command(SendMessage,CanSendMessage);
             InitOponnentsGrid(grdOponnents);
+        }
+
+        private void OnButtonClicked(object? sender, IndexedButton e)
+        {
+            game.Play(e.RowIndex, e.ColumnIndex);
         }
 
         private void OnGameError(object? sender, EventArgs e)
@@ -58,7 +65,8 @@ namespace TicTacTow25.ViewModels
         }
         private void UpdatGameGrid()
         {
-            for(int i = 0; i < game.PlayersCount; i++)
+            grdBoard.RestoreColors();
+            for (int i = 0; i < game.PlayersCount; i++)
                 grdBoard.UpdateButton(game.GetPlayerPosition(i), game.GetPlayerColor(i));
         }
 
