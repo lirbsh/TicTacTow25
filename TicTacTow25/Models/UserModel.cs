@@ -11,7 +11,8 @@ namespace TicTacTow25.Models
         protected abstract void ShowAlert(string errMessage);
         protected abstract void SaveToPreferences();
 
-        public EventHandler<bool>? OnAuthComplete;
+        public EventHandler<bool>? AuthComplete;
+        public EventHandler<string>? AuthError;
         public bool IsRegistered => !string.IsNullOrWhiteSpace(Name);
         public bool IsBusy { get;protected set; } = false;
         public string Name { get; set; } = string.Empty;

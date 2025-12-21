@@ -9,7 +9,6 @@ namespace TicTacTow25.Models
         protected FbData fbd = new();
         protected IListenerRegistration? ilr;
         protected Game? _currentGame;
-        protected abstract void OnGameDeleted(object? sender, EventArgs e);
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IQuerySnapshot snapshot, Exception error);
         protected abstract void OnComplete(IQuerySnapshot qs);

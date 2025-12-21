@@ -9,10 +9,8 @@ namespace TicTacTow25.ModelsLogic
         protected override void ShowAlert(string errMessage)
         {
             errMessage = fbd.GetErrorMessage(errMessage);
-            MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                Toast.Make(errMessage, ToastDuration.Long).Show();
-            });
+            AuthError?.Invoke(this, errMessage);
+            
         }
         protected override void SaveToPreferences()
         {
@@ -27,13 +25,13 @@ namespace TicTacTow25.ModelsLogic
             {
                 if (CurrentAction == Actions.Register)
                     SaveToPreferences();
-                OnAuthComplete?.Invoke(this, true);
+                AuthComplete?.Invoke(this, true);
             }
             else if (task.Exception != null)
             {
                 string errMessage = task.Exception.Message;
                 ShowAlert(errMessage);
-                OnAuthComplete?.Invoke(this, false);
+                AuthComplete?.Invoke(this, false);
             }
             else
                 ShowAlert(Strings.UnknownError);

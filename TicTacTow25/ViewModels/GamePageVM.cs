@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
@@ -14,6 +15,7 @@ namespace TicTacTow25.ViewModels
         public GamePageVM(Game game, Grid board)
         {
             game.GameChanged += OnGameChanged;
+            game.GameDeleted += OnGameDeleted ;
             game.DisplayChanged += OnDisplayChanged;
             grdBoard.Init(board, game.RowSize, 70,Colors.Blue);
             grdBoard.OnButtonClicked += OnButtonClicked;
@@ -21,6 +23,15 @@ namespace TicTacTow25.ViewModels
             if (!game.IsHostUser)
                 game.UpdateGuestUser(OnComplete);
         }
+
+        private void OnGameDeleted(object? sender, EventArgs e)
+        {
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Toast.Make(Strings.GameCanceld, ToastDuration.Long).Show();
+            });
+        }
+
         private void OnDisplayChanged(object? sender, DisplayMoveArgs e)
         {
             grdBoard.UpdateDisplay(e);
@@ -37,7 +48,7 @@ namespace TicTacTow25.ViewModels
         private void OnComplete(Task task)
         {
             if(!task.IsCompletedSuccessfully)
-                Toast.Make(Strings.JoinGameErr, CommunityToolkit.Maui.Core.ToastDuration.Long, 14);
+                Toast.Make(Strings.JoinGameErr, ToastDuration.Long, 14);
         }
         public void AddSnapshotListener()
         {

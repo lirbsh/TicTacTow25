@@ -31,12 +31,12 @@ namespace TicTacTow25.ModelsLogic
                 Players.MyIndex = myIndex;
                 Message = game.Message;
                 if(CurrentPlayers == Players.Count)
-                    OnGameChanged?.Invoke(this, EventArgs.Empty);
+                    GameChanged?.Invoke(this, EventArgs.Empty);
                 else
-                    OnGameError?.Invoke(this, EventArgs.Empty);
+                    GameError?.Invoke(this, EventArgs.Empty);
             }
             else
-                OnGameDeleted?.Invoke(this, EventArgs.Empty);
+                GameDeleted?.Invoke(this, EventArgs.Empty);
         }
         public override void SetDocument(Action<Task> OnComplete)
         {

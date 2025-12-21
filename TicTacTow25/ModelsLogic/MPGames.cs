@@ -6,13 +6,6 @@ namespace TicTacTow25.ModelsLogic
 {
     public class MPGames:MPGamesModel
     {
-        protected override void OnGameDeleted(object? sender, EventArgs e)
-        {
-            MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
-            });
-        }
         protected override void OnChange(IQuerySnapshot snapshot, Exception error)
         {
             fbd.GetDocumentsWhereEqualTo(Keys.MPGamesCollection, nameof(MPGameModel.IsFull), false, OnComplete);
@@ -22,13 +15,13 @@ namespace TicTacTow25.ModelsLogic
             IsBusy = false;
             if (task.IsCompletedSuccessfully)
                 OnGameAdded?.Invoke(this, _currentGame!);
-            else if (task.IsFaulted && task.Exception != null)
-            {
-                MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    Toast.Make(fbd.GetErrorMessage(task.Exception.Message), CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
-                });
-            }
+            //else if (task.IsFaulted && task.Exception != null)
+            //{
+            //    MainThread.InvokeOnMainThreadAsync(() =>
+            //    {
+            //        Toast.Make(fbd.GetErrorMessage(task.Exception.Message), CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+            //    });
+            //}
         }
         protected override void OnComplete(IQuerySnapshot qs)
         {
@@ -61,7 +54,6 @@ namespace TicTacTow25.ModelsLogic
         {
             IsBusy = true;
             _currentGame = new(SelectedTotalPlayers);
-            _currentGame.OnGameDeleted += OnGameDeleted;
             _currentGame.SetDocument(OnComplete);
         }
     }

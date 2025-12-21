@@ -1,18 +1,10 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using Plugin.CloudFirestore;
+﻿using Plugin.CloudFirestore;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
     public class Games : GamesModel
     {
-        protected override void OnGameDeleted(object? sender, EventArgs e)
-        {
-            MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
-            });
-        }
         protected override void OnComplete(Task task)
         {
             IsBusy = false;
@@ -49,7 +41,6 @@ namespace TicTacTow25.ModelsLogic
             {
                 IsHostUser = true
             };
-            _currentGame.GameDeleted += OnGameDeleted;
             _currentGame.SetDocument(OnComplete);
         }
         public override void AddSnapshotListener()

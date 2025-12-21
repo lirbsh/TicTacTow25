@@ -20,9 +20,9 @@ namespace TicTacTow25.ViewModels
         {
             this.game = game;
             this.grdBoard.Init(grdBoard, 5, 15,Colors.Cyan);
-            game.OnGameChanged += OnGameChanged;
-            game.OnGameDeleted += OnGameDeleted;
-            game.OnGameError += OnGameError;
+            game.GameChanged += OnGameChanged;
+            game.GameDeleted += OnGameDeleted;
+            game.GameError += OnGameError;
             SendMessageCommand = new Command(SendMessage,CanSendMessage);
             InitOponnentsGrid(grdOponnents);
         }
@@ -45,7 +45,7 @@ namespace TicTacTow25.ViewModels
             MainThread.InvokeOnMainThreadAsync(() =>
             {
                 Shell.Current.Navigation.PopAsync();
-                Toast.Make(Strings.GameCanceld, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                Toast.Make(Strings.GameCanceld, ToastDuration.Long, 14).Show();
             });
         }
         private void OnGameChanged(object? sender, EventArgs e)

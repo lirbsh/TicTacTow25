@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using System.Windows.Input;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
@@ -54,8 +56,18 @@ namespace TicTacTow25.ViewModels
         {
             AuthCommand = user.IsRegistered? new Command(Login, CanAuth): new Command(Register, CanAuth);
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
-            user.OnAuthComplete += OnAuthComplete;
+            user.AuthComplete += OnAuthComplete;
+            user.AuthError += OnAuthError;
         }
+
+        private void OnAuthError(object? sender, string errMessage)
+        {
+            MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Toast.Make(errMessage, ToastDuration.Long).Show();
+            });
+        }
+
         private void OnAuthComplete(object? sender, bool success)
         {
             

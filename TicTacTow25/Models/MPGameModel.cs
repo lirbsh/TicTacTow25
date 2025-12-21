@@ -11,11 +11,11 @@ namespace TicTacTow25.Models
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
         [Ignored]
-        public EventHandler? OnGameChanged;
+        public EventHandler? GameChanged;
         [Ignored]
-        public EventHandler? OnGameDeleted;
+        public EventHandler? GameDeleted;
         [Ignored]
-        public EventHandler? OnGameError;
+        public EventHandler? GameError;
         [Ignored]
         public string Id { get; set; } = string.Empty;
         [Ignored]
