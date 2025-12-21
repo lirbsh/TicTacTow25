@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using System.Windows.Input;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
@@ -21,9 +22,16 @@ namespace TicTacTow25.ViewModels
             this.grdBoard.Init(grdBoard, 5, 15,Colors.Cyan);
             game.OnGameChanged += OnGameChanged;
             game.OnGameDeleted += OnGameDeleted;
+            game.OnGameError += OnGameError;
             SendMessageCommand = new Command(SendMessage,CanSendMessage);
             InitOponnentsGrid(grdOponnents);
         }
+
+        private void OnGameError(object? sender, EventArgs e)
+        {
+            Toast.Make(Strings.GameError, ToastDuration.Long, 14).Show();
+        }
+
         private bool CanSendMessage()
         {
             return IsMyTurn;
@@ -48,31 +56,29 @@ namespace TicTacTow25.ViewModels
             OnPropertyChanged(nameof(Message));
             OnPropertyChanged(nameof(IsMyTurn));
         }
-
         private void UpdatGameGrid()
         {
-            for(int i=0;i< game.Players.Count;i++)
-                grdBoard.UpdateButton(game.Players.PlayersList[i].Position, game.Players.PlayersList[i].GetColor(i));
+            for(int i = 0; i < game.PlayersCount; i++)
+                grdBoard.UpdateButton(game.GetPlayerPosition(i), game.GetPlayerColor(i));
         }
 
         private void DisplayOponnentsNames()
         {
             int lblIndex = 0;
-            Console.WriteLine($"****MyIndex: {game.Players.MyIndex}");
-            for (int i = 0; i < game.Players.MyIndex; i++)
+            for (int i = 0; i < game.MyIndex; i++)
             {
-                lstOponnentsLabels[lblIndex].Text = game.Players.GetPlayerName(i);
-                lstOponnentsLabels[lblIndex++].BackgroundColor = i== game.Players.NextPlay ? Colors.Yellow : Colors.Cyan;
+                lstOponnentsLabels[lblIndex].Text = game.GetPlayerName(i);
+                lstOponnentsLabels[lblIndex++].BackgroundColor = i == game.NextPlay ? Colors.Yellow : Colors.Cyan;
             }
-            for (int i = game.Players.MyIndex + 1; i < game.Players.Count; i++)
+            for (int i = game.MyIndex + 1; i < game.PlayersCount; i++)
             {
-                lstOponnentsLabels[lblIndex].Text = game.Players.GetPlayerName(i);
-                lstOponnentsLabels[lblIndex++].BackgroundColor = game.Players.IsOponnentTurn(i)? Colors.Yellow :Colors.Cyan;
+                lstOponnentsLabels[lblIndex].Text = game.GetPlayerName(i);
+                lstOponnentsLabels[lblIndex++].BackgroundColor = game.IsOponnentTurn(i) ? Colors.Yellow : Colors.Cyan;
             }
         }
         private void InitOponnentsGrid(Grid grdOponnents)
         {
-            int oponnentsCount = game.Players.TotalPlayers - 1;
+            int oponnentsCount = game.TotalPlayers - 1;
             for (int i = 0; i < oponnentsCount; i++)
             {
                 grdOponnents.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });

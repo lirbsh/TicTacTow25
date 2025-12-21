@@ -2,14 +2,8 @@
 
 namespace TicTacTow25.ModelsLogic
 {
-    public class Player(string name) : PlayerModel(name)
+    public class Player(string name,int index) : PlayerModel(name, index)
     {
-        public Player() : this(string.Empty) { }
-
-        public override Color GetColor(int index)
-        {
-           return playerColors[index % playerColors.Length];
-        }
+        public Player() : this(string.Empty, 0) { }
     }
-
 }

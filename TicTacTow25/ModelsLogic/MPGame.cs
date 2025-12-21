@@ -10,7 +10,7 @@ namespace TicTacTow25.ModelsLogic
         {
             
             Created = DateTime.Now;
-            Player p = new(new User().Name);
+            Player p = new(new User().Name,0);
             Players.Add(p);
             Players.TotalPlayers = totalPlayers;
             Players.NextPlay = totalPlayers - 1;
@@ -30,7 +30,10 @@ namespace TicTacTow25.ModelsLogic
                 Players = game.Players;
                 Players.MyIndex = myIndex;
                 Message = game.Message;
-                OnGameChanged?.Invoke(this, EventArgs.Empty);
+                if(CurrentPlayers == Players.Count)
+                    OnGameChanged?.Invoke(this, EventArgs.Empty);
+                else
+                    OnGameError?.Invoke(this, EventArgs.Empty);
             }
             else
                 OnGameDeleted?.Invoke(this, EventArgs.Empty);
@@ -52,14 +55,12 @@ namespace TicTacTow25.ModelsLogic
         {
             fbd.DeleteDocument(Keys.MPGamesCollection, Id, OnComplete);
         }
-
         public override void JoinGame()
         {
             if (CurrentPlayers + 1 == Players.TotalPlayers)
                 fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(IsFull), true, OnComplete);
             Players.MyIndex = CurrentPlayers;
-            Console.WriteLine("####My Index: " + Players.MyIndex);
-            Player p = new(MyName);
+            Player p = new(MyName, CurrentPlayers);
             Players.Add(p);
             fbd.StartBatch();
             fbd.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
@@ -80,11 +81,23 @@ namespace TicTacTow25.ModelsLogic
         {
             return Players.IsMyTurn();
         }
-       
-
+        public override Position GetPlayerPosition(int playerIndex)
+        {
+            return Players.PlayersList[playerIndex].Position;
+        }
         public override Color GetPlayerColor(int playerIndex)
         {
-            return playerColors[playerIndex % playerColors.Length];
+            return Players.PlayersList[playerIndex].Color;
+        }
+
+        public override string GetPlayerName(int playerIndex)
+        {
+            return Players.PlayersList[playerIndex].Name;
+        }
+
+        public override bool IsOponnentTurn(int playerIndex)
+        {
+           return Players.IsOponnentTurn(playerIndex);
         }
     }
 }

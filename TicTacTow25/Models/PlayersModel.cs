@@ -5,7 +5,6 @@ namespace TicTacTow25.Models
 {
     public abstract class PlayersModel
     {
-        protected Position[] startPositions = [new(4, 2), new(2, 4), new(0, 2), new(2, 0), new(2, 2)];
         [Ignored]
         public int MyIndex { get; set; } = 0;
         [Ignored]

@@ -6,7 +6,6 @@ namespace TicTacTow25.ModelsLogic
     {
         public override void Add(Player p)
         {
-            p.Position = startPositions[MyIndex];
             PlayersList.Add(p);
         }
 

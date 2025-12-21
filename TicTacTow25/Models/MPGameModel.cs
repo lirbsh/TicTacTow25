@@ -6,17 +6,16 @@ namespace TicTacTow25.Models
 {
     public abstract class MPGameModel
     {
-        protected readonly Color[] playerColors = [ Colors.Cyan, Colors.Magenta, Colors.Green, Colors.Orange ];
         protected IListenerRegistration? ilr;
-
         protected FbData fbd = new();
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
-
-           [Ignored]
+        [Ignored]
         public EventHandler? OnGameChanged;
         [Ignored]
         public EventHandler? OnGameDeleted;
+        [Ignored]
+        public EventHandler? OnGameError;
         [Ignored]
         public string Id { get; set; } = string.Empty;
         [Ignored]
@@ -24,9 +23,17 @@ namespace TicTacTow25.Models
         [Ignored]
         public string MyMessage { get; set; } = string.Empty;
         [Ignored]
-        public string HostName => Players.GetPlayerName(0);
+        public string HostName => GetPlayerName(0);
         [Ignored]
         public abstract string JoinStatus { get; }
+        [Ignored]
+        public int NextPlay => Players.NextPlay;
+        [Ignored]
+        public int MyIndex => Players.MyIndex;
+        [Ignored]
+        public int TotalPlayers => Players.TotalPlayers;
+        [Ignored]
+        public int PlayersCount => Players.Count;
         public bool IsFull { get; set; }
         public DateTime Created { get; set; }
         public int CurrentPlayers { get; set; } = 1;
@@ -39,6 +46,9 @@ namespace TicTacTow25.Models
         public abstract bool IsMyTurn();
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
+        public abstract Position GetPlayerPosition(int playerIndex);
         public abstract Color GetPlayerColor(int playerIndex);
+        public abstract string GetPlayerName(int playerIndex);
+        public abstract bool IsOponnentTurn(int playerIndex);
     }
 }

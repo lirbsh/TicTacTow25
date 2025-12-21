@@ -24,5 +24,6 @@
         public const string MainPageKey = "/MainPage";
         public const string Waiting = "Waiting...";
         public const string SendMessage = "Send Message";
+        public const string GameError = "Error Please Exit";
     }
 }
