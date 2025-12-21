@@ -2,7 +2,7 @@
 
 namespace TicTacTow25.Converters
 {
-    internal class BoolToColorConverter : IValueConverter
+    public class BoolToColorConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {

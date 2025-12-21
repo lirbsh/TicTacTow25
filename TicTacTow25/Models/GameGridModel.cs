@@ -1,6 +1,6 @@
 ﻿namespace TicTacTow25.Models
 {
-    internal abstract class GameGridModel:Grid
+    public abstract class GameGridModel : Grid
     {
         protected int rowSize;
         protected IndexedButton[,]? gameButtons;

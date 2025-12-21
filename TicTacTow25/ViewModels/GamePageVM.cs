@@ -23,7 +23,6 @@ namespace TicTacTow25.ViewModels
             if (!game.IsHostUser)
                 game.UpdateGuestUser(OnComplete);
         }
-
         private void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
@@ -31,7 +30,6 @@ namespace TicTacTow25.ViewModels
                 Toast.Make(Strings.GameCanceld, ToastDuration.Long).Show();
             });
         }
-
         private void OnDisplayChanged(object? sender, DisplayMoveArgs e)
         {
             grdBoard.UpdateDisplay(e);

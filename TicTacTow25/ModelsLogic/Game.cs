@@ -6,7 +6,6 @@ namespace TicTacTow25.ModelsLogic
     public class Game : GameModel
     {
         public override string OpponentName => IsHostUser ? GuestName : HostName;
-
         public Game(GameSize selectedGameSize)
         {
             Created = DateTime.Now;

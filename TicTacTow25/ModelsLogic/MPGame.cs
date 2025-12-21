@@ -8,7 +8,6 @@ namespace TicTacTow25.ModelsLogic
         public override string JoinStatus => CurrentPlayers + "/" + Players.TotalPlayers;
         public MPGame(int totalPlayers)
         {
-            
             Created = DateTime.Now;
             Player p = new(new User().Name,0);
             Players.Add(p);

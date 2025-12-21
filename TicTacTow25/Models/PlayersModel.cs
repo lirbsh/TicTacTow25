@@ -19,7 +19,5 @@ namespace TicTacTow25.Models
         public abstract void SetNextPlayer();
         public abstract bool IsMyTurn();
         public abstract void Play(int rowIndex, int columnIndex);
-
-
     }
 }

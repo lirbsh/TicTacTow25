@@ -2,7 +2,7 @@
 
 namespace TicTacTow25.ModelsLogic
 {
-    internal partial class GameGrid : GameGridModel
+    public partial class GameGrid : GameGridModel
     {
         public override void Init(Grid board, int rowSize, int size, Color color)
         {
@@ -40,7 +40,7 @@ namespace TicTacTow25.ModelsLogic
         {
             ButtonClicked?.Invoke(this, (IndexedButton)sender! );
         }
-        internal void UpdateDisplay(DisplayMoveArgs e)
+        public void UpdateDisplay(DisplayMoveArgs e)
         {
             gameButtons![e.RowIndex, e.ColumnIndex].Text = e.Symbol;
         }

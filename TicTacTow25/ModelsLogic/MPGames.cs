@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using Plugin.CloudFirestore;
+﻿using Plugin.CloudFirestore;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic

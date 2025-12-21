@@ -2,7 +2,7 @@
 {
     public partial class IndexedButton : Button
     {
-        private Color baseColor;
+        private readonly Color baseColor;
         public int RowIndex { get; set; } 
         public int ColumnIndex { get; set; } 
         public void RestoreColor( )

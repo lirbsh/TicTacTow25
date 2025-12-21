@@ -16,7 +16,6 @@ namespace TicTacTow25.ViewModels
         public string MyMessage { get => game.MyMessage; set => game.MyMessage = value; }
         public bool IsMyTurn => game.IsMyTurn();
         public ICommand SendMessageCommand { get; }
-
         public MPGamePageVM(MPGame game,Grid grdOponnents, Grid grdBoard)
         {
             this.game = game;
@@ -28,17 +27,14 @@ namespace TicTacTow25.ViewModels
             SendMessageCommand = new Command(SendMessage,CanSendMessage);
             InitOponnentsGrid(grdOponnents);
         }
-
         private void OnButtonClicked(object? sender, IndexedButton e)
         {
             game.Play(e.RowIndex, e.ColumnIndex);
         }
-
         private void OnGameError(object? sender, EventArgs e)
         {
             Toast.Make(Strings.GameError, ToastDuration.Long, 14).Show();
         }
-
         private bool CanSendMessage()
         {
             return IsMyTurn;
@@ -100,11 +96,11 @@ namespace TicTacTow25.ViewModels
                 grdOponnents.Add(lstOponnentsLabels[i], i, 0);
             }
         }
-        internal void AddSnapshotListener()
+        public void AddSnapshotListener()
         {
             game.AddSnapshotListener();
         }
-        internal void RemoveSnapshotListener()
+        public void RemoveSnapshotListener()
         {
             game.RemoveSnapshotListener();
         }

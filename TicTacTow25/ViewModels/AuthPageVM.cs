@@ -59,7 +59,6 @@ namespace TicTacTow25.ViewModels
             user.AuthComplete += OnAuthComplete;
             user.AuthError += OnAuthError;
         }
-
         private void OnAuthError(object? sender, string errMessage)
         {
             MainThread.InvokeOnMainThreadAsync(() =>
@@ -67,7 +66,6 @@ namespace TicTacTow25.ViewModels
                 Toast.Make(errMessage, ToastDuration.Long).Show();
             });
         }
-
         private void OnAuthComplete(object? sender, bool success)
         {
             

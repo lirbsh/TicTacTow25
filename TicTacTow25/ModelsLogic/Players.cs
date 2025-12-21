@@ -8,17 +8,14 @@ namespace TicTacTow25.ModelsLogic
         {
             PlayersList.Add(p);
         }
-
         public override string GetPlayerName(int index)
         {
             return PlayersList[index].Name;
         }
-
         public override bool IsMyTurn()
         {
             return NextPlay == MyIndex;
         }
-
         public override void SetNextPlayer()
         {
             NextPlay = (NextPlay + 1) % TotalPlayers;
