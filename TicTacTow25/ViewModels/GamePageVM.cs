@@ -12,17 +12,25 @@ namespace TicTacTow25.ViewModels
         public string MyName => game.MyName;
         public string StatusMessage => game.StatusMessage;
         public string OpponentName => game.OpponentName;
+        public string TimeLeft => game.TimeLeft;
         public GamePageVM(Game game, Grid board)
         {
             game.GameChanged += OnGameChanged;
             game.GameDeleted += OnGameDeleted ;
             game.DisplayChanged += OnDisplayChanged;
+            game.TimeLeftChanged += OnTimeLeftChanged;
             grdBoard.Init(board, game.RowSize, 70,Colors.Blue);
             grdBoard.ButtonClicked += OnButtonClicked;
             this.game = game;
             if (!game.IsHostUser)
                 game.UpdateGuestUser(OnComplete);
         }
+
+        private void OnTimeLeftChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(TimeLeft));
+        }
+
         private void OnGameDeleted(object? sender, EventArgs e)
         {
             MainThread.InvokeOnMainThreadAsync(() =>

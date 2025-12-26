@@ -1,3 +1,4 @@
+using System.Xml;
 using TicTacTow25.ViewModels;
 namespace TicTacTow25.Views;
 public partial class AuthPage : ContentPage

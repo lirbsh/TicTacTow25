@@ -1,7 +1,6 @@
 ﻿using Plugin.CloudFirestore;
 using Plugin.CloudFirestore.Attributes;
 using TicTacTow25.ModelsLogic;
-
 namespace TicTacTow25.Models
 {
     public abstract class MPGameModel

@@ -13,11 +13,14 @@ namespace TicTacTow25.Models
         protected GameStatus _status = new();
         protected string[,]? gameBoard;
         protected string nextPlay = Strings.X;
+        protected TimerSettings timerSettings = new(Keys.TimerTotalTime, Keys.TimerInterval);
         protected abstract void UpdateStatus();
         protected abstract void UpdateFbMove();
         protected abstract void UpdateFbJoinGame(Action<Task> OnComplete);
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
+        [Ignored]
+        public EventHandler? TimeLeftChanged;
         [Ignored]
         public EventHandler<DisplayMoveArgs>? DisplayChanged;
         [Ignored]
@@ -36,6 +39,9 @@ namespace TicTacTow25.Models
         public string RowSizeName => $"{RowSize} X {RowSize}";
         [Ignored]
         public bool IsHostUser { get; set; }
+        [Ignored]
+        public string TimeLeft { get; protected set; } = string.Empty;
+
         public string HostName { get; set; } = string.Empty;
         public string GuestName { get; set; } = string.Empty;
         public DateTime Created { get; set; }

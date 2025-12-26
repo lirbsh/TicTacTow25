@@ -1,4 +1,5 @@
-﻿using Plugin.CloudFirestore;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Plugin.CloudFirestore;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -6,15 +7,33 @@ namespace TicTacTow25.ModelsLogic
     public class Game : GameModel
     {
         public override string OpponentName => IsHostUser ? GuestName : HostName;
+
+        public Game() { RegisterTimer(); }
         public Game(GameSize selectedGameSize)
         {
+            RegisterTimer();
             Created = DateTime.Now;
             HostName = new User().Name;
             IsHostUser = true;
             RowSize = selectedGameSize.Size;
             InitBoardAndStatus();
         }
-        public Game() { }
+
+        private void RegisterTimer()
+        {
+            WeakReferenceMessenger.Default.Register<AppMessage<long>>(this, (r, m) =>
+            {
+                OnMessageReceived(m.Value);
+            });
+        }
+
+        private void OnMessageReceived(long timeLeft)
+        {
+            TimeLeft = timeLeft == Keys.FinishedSignal ? Strings.TimeUp : double.Round(timeLeft / 1000, 1).ToString();
+            TimeLeftChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+       
         public override void InitBoardAndStatus()
         {
             gameBoard = new string[RowSize, RowSize];
@@ -84,8 +103,18 @@ namespace TicTacTow25.ModelsLogic
                 GameChanged?.Invoke(this, EventArgs.Empty);
                 IsHostTurn = updatedGame.IsHostTurn;
                 UpdateStatus();
-                if (_status.CurrentStatus == GameStatus.Statuses.Play && updatedGame.Move[0] != Keys.NoMove)
-                    Play(updatedGame.Move[0], updatedGame.Move[1], false);
+                if (_status.CurrentStatus == GameStatus.Statuses.Play)
+                {
+                    WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
+                    if (updatedGame.Move[0] != Keys.NoMove)
+                        Play(updatedGame.Move[0], updatedGame.Move[1], false);
+                }
+                else
+                {
+                    WeakReferenceMessenger.Default.Send(new AppMessage<bool>(true));
+                    TimeLeft = string.Empty;
+                    TimeLeftChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
             else
             {
