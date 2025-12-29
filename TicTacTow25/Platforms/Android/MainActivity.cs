@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Content.PM;
 using CommunityToolkit.Mvvm.Messaging;
 using TicTacTow25.Models;
+using Android.Content;
 
 namespace TicTacTow25.Platforms.Android
 {
@@ -13,6 +14,18 @@ namespace TicTacTow25.Platforms.Android
         override protected void OnCreate(Bundle? savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            RegisterTimerMessages();
+            StartDeleteFbDocsService();
+        }
+
+        private void StartDeleteFbDocsService()
+        {
+            Intent intent = new (this, typeof(DeleteFbDocsService));
+            StartService(intent);
+        }
+
+        private void RegisterTimerMessages()
+        {
             WeakReferenceMessenger.Default.Register<AppMessage<TimerSettings>>(this, (r, m) =>
             {
                 OnMessageReceived(m.Value);
