@@ -9,11 +9,15 @@ namespace TicTacTow25.ViewModels
     public partial class AuthPageVM : ObservableObject
     {
         private readonly User user = new();
+        private readonly Animatioms animatioms = new() { IsLooping = true };
         public ICommand AuthCommand { get; }
         public ICommand ToggleIsPasswordCommand { get; }
         public bool IsBusy => user.IsBusy;
         public bool IsRegistered => user.IsRegistered;
         public string UserStateAction => user.IsRegistered?Strings.Login:Strings.Register;
+        public string UserPrompt => user.Prompt;
+        public double AnimationOpacity => animatioms.Opacity;
+
         public string Name
         {
             get => user.Name;
@@ -58,7 +62,17 @@ namespace TicTacTow25.ViewModels
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
             user.AuthComplete += OnAuthComplete;
             user.AuthError += OnAuthError;
+            animatioms.OpacityChanged += OnOpacityChanged;
         }
+        public void StartOpacityAnimation()
+        {
+            animatioms.StartOpacityAnimation();
+        }
+        private void OnOpacityChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(AnimationOpacity));
+        }
+
         private void OnAuthError(object? sender, string errMessage)
         {
             MainThread.InvokeOnMainThreadAsync(() =>

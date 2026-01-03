@@ -9,6 +9,13 @@
     IsBusy="{Binding IsBusy}">
     <VerticalStackLayout Padding="7" Spacing="10">
         <Label
+            Margin="20,20,20,0"
+            FontSize="30"
+            HorizontalOptions="Center"
+            Opacity="{Binding AnimationOpacity}"
+            Text="{Binding UserPrompt}"
+            TextColor="Red" />
+        <Label
             Margin="20"
             FontSize="42"
             HorizontalOptions="Center"

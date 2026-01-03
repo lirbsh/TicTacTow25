@@ -28,7 +28,7 @@ namespace TicTacTow25.Platforms.Android
             {
                 fbd.GetDocumentsWhereLessThan(Keys.GamesCollection, nameof(GameModel.Created), DateTime.Now.AddDays(-1), OnComplete);
                 fbd.GetDocumentsWhereLessThan(Keys.MPGamesCollection, nameof(GameModel.Created), DateTime.Now.AddDays(-1), OnComplete);
-                Thread.Sleep(Keys.OneHourInMillisconds); 
+                Thread.Sleep(Keys.HourToMillisconds); 
             }
             StopSelf();
         }

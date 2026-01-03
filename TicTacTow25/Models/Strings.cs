@@ -26,5 +26,6 @@
         public const string SendMessage = "Send Message";
         public const string GameError = "Error Please Exit";
         public const string TimeUp = "Time Up";
+        public const string Hello = "Hello";
     }
 }

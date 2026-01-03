@@ -13,7 +13,7 @@ namespace TicTacTow25.Models
         protected GameStatus _status = new();
         protected string[,]? gameBoard;
         protected string nextPlay = Strings.X;
-        protected TimerSettings timerSettings = new(Keys.TimerTotalTime, Keys.TimerInterval);
+        protected TimerSettings timerSettings = new(Keys.TotalTurnTime, Keys.TurnTimeInterval);
         protected abstract void UpdateStatus();
         protected abstract void UpdateFbMove();
         protected abstract void UpdateFbJoinGame(Action<Task> OnComplete);
