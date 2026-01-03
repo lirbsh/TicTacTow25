@@ -14,7 +14,7 @@ namespace TicTacTow25.ViewModels
         public ICommand ToggleIsPasswordCommand { get; }
         public bool IsBusy => user.IsBusy;
         public bool IsRegistered => user.IsRegistered;
-        public string UserStateAction => user.IsRegistered?Strings.Login:Strings.Register;
+        public string UserStateAction => animatioms.Text;
         public string UserPrompt => user.Prompt;
         public double AnimationOpacity => animatioms.Opacity;
 
@@ -63,11 +63,23 @@ namespace TicTacTow25.ViewModels
             user.AuthComplete += OnAuthComplete;
             user.AuthError += OnAuthError;
             animatioms.OpacityChanged += OnOpacityChanged;
+            animatioms.TextChanged += OnTextChanged;
         }
+
+        private void OnTextChanged(object? sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(UserStateAction));
+        }
+
         public void StartOpacityAnimation()
         {
             animatioms.StartOpacityAnimation();
         }
+        public void StartTextAnimation()
+        {
+            animatioms.StartTextAnimation(user.IsRegistered ? Strings.Login : Strings.Register);
+        }
+
         private void OnOpacityChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(AnimationOpacity));

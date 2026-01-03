@@ -3,7 +3,7 @@ using TicTacTow25.ViewModels;
 namespace TicTacTow25.Views;
 public partial class AuthPage : ContentPage
 {
-    AuthPageVM apVM = new ();
+    private readonly AuthPageVM apVM = new ();
     public AuthPage()
 	{
 		InitializeComponent();
@@ -22,5 +22,6 @@ public partial class AuthPage : ContentPage
     {
         base.OnSizeAllocated(width, height);
         apVM.StartOpacityAnimation();
+        apVM.StartTextAnimation();
     }
 }

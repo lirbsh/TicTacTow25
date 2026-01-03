@@ -47,7 +47,7 @@ namespace TicTacTow25.Platforms.Android
 
         private void OnMessageReceived(TimerSettings value)
         {
-            mTimer = new MyTimer(value.TotalTimeInMilliseconds, value.IntervalInMilliseconds);
+            mTimer = new MyTimer(value);
             mTimer.Start();
         }
     }
