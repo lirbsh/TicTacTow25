@@ -71,12 +71,9 @@ namespace TicTacTow25.ViewModels
             OnPropertyChanged(nameof(UserStateAction));
         }
 
-        public void StartOpacityAnimation()
+        public void StartAnimations()
         {
             animatioms.StartOpacityAnimation();
-        }
-        public void StartTextAnimation()
-        {
             animatioms.StartTextAnimation(user.IsRegistered ? Strings.Login : Strings.Register);
         }
 
@@ -137,6 +134,11 @@ namespace TicTacTow25.ViewModels
         {
             IsPassword = !IsPassword;
             OnPropertyChanged(nameof(IsPassword));
+        }
+
+        internal void StopAnimations()
+        {
+            animatioms.StopAnimations();
         }
     }
 }

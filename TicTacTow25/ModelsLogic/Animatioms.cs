@@ -54,6 +54,12 @@ namespace TicTacTow25.ModelsLogic
             }
             TextChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        internal void StopAnimations()
+        {
+            IsLooping = false;
+        }
+
         public Animatioms()
         {
             WeakReferenceMessenger.Default.Register<AppMessage<long>>(this, (r, m) =>

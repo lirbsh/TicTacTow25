@@ -1,4 +1,5 @@
 ﻿using Plugin.CloudFirestore;
+using System.ComponentModel;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -15,6 +16,7 @@ namespace TicTacTow25.ModelsLogic
             Players.NextPlay = totalPlayers - 1;
         }
         public MPGame() { }
+
         protected override void OnComplete(Task task)
         {
             //code for handeling completion of tasks if needed
@@ -88,7 +90,6 @@ namespace TicTacTow25.ModelsLogic
         {
             return Players.PlayersList[playerIndex].Color;
         }
-
         public override string GetPlayerName(int playerIndex)
         {
             return Players.PlayersList[playerIndex].Name;
