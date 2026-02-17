@@ -1,5 +1,6 @@
 ﻿using Plugin.CloudFirestore;
 using System.ComponentModel;
+using TicTacTow25.Interfaces;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
@@ -9,13 +10,14 @@ namespace TicTacTow25.ModelsLogic
         public override string JoinStatus => CurrentPlayers + "/" + Players.TotalPlayers;
         public MPGame(int totalPlayers)
         {
+            MyName = user!.Name;
             Created = DateTime.Now;
-            Player p = new(new User().Name,0);
+            Player p = new(user!.Name,0);
             Players.Add(p);
             Players.TotalPlayers = totalPlayers;
             Players.NextPlay = totalPlayers - 1;
         }
-        public MPGame() { }
+        public MPGame() { MyName = user!.Name; }
 
         protected override void OnComplete(Task task)
         {
@@ -41,11 +43,11 @@ namespace TicTacTow25.ModelsLogic
         }
         public override void SetDocument(Action<Task> OnComplete)
         {
-            Id = fbd.SetDocument(this, Keys.MPGamesCollection, Id, OnComplete);
+            Id = fbd!.SetDocument(this, Keys.MPGamesCollection, Id, OnComplete);
         }
         public override void AddSnapshotListener()
         {
-            ilr = fbd.AddSnapshotListener(Keys.MPGamesCollection, Id, OnChange);
+            ilr = fbd!.AddSnapshotListener(Keys.MPGamesCollection, Id, OnChange);
         }
         public override void RemoveSnapshotListener()
         {
@@ -54,19 +56,19 @@ namespace TicTacTow25.ModelsLogic
         }
         public override void DeleteDocument(Action<Task> OnComplete)
         {
-            fbd.DeleteDocument(Keys.MPGamesCollection, Id, OnComplete);
+            fbd!.DeleteDocument(Keys.MPGamesCollection, Id, OnComplete);
         }
         public override void JoinGame()
         {
             if (CurrentPlayers + 1 == Players.TotalPlayers)
-                fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(IsFull), true, OnComplete);
+                fbd?.UpdateField(Keys.MPGamesCollection, Id, nameof(IsFull), true, OnComplete);
             Players.MyIndex = CurrentPlayers;
-            Player p = new(MyName, CurrentPlayers);
+            Player p = new(MyName!, CurrentPlayers);
             Players.Add(p);
-            fbd.StartBatch();
-            fbd.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
-            fbd.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players);
-            fbd.CommitBatch(OnComplete);
+            fbd?    .StartBatch();
+            fbd?.BatchIncrementField(Keys.MPGamesCollection, Id, nameof(CurrentPlayers), 1);
+            fbd?.BatchUpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players);
+            fbd?.CommitBatch(OnComplete);
         }
         public override void SendMessage()
         {
@@ -76,7 +78,7 @@ namespace TicTacTow25.ModelsLogic
                 { nameof(Players), Players },
                 { nameof(Message), MyMessage }
             };
-            fbd.UpdateFields(Keys.MPGamesCollection, Id, dict, OnComplete);
+            fbd?.UpdateFields(Keys.MPGamesCollection, Id, dict, OnComplete);
         }
         public override bool IsMyTurn()
         {
@@ -103,7 +105,7 @@ namespace TicTacTow25.ModelsLogic
         public override void Play(int rowIndex, int columnIndex)
         {
             Players.Play(rowIndex, columnIndex);
-            fbd.UpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players, OnComplete);
+            fbd?.UpdateField(Keys.MPGamesCollection, Id, nameof(Players), Players, OnComplete);
         }
     }
 }

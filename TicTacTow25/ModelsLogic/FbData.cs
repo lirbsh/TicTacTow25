@@ -1,10 +1,11 @@
 ﻿using Plugin.CloudFirestore;
 using System.Text.RegularExpressions;
+using TicTacTow25.Interfaces;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
-    public partial class FbData:FbDataModel
+    public partial class FbData:FbDataModel, IFbData
     {
         public override async void CreateUserWithEmailAndPasswordAsync(string email, string password, string name, Action<System.Threading.Tasks.Task> OnComplete)
         {

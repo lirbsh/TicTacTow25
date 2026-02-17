@@ -8,12 +8,13 @@ namespace TicTacTow25.ModelsLogic
     {
         public override string OpponentName => IsHostUser ? GuestName : HostName;
 
-        public Game() { RegisterTimer(); }
+        public Game() { RegisterTimer(); MyName = user!.Name; }
         public Game(GameSize selectedGameSize)
         {
             RegisterTimer();
             Created = DateTime.Now;
-            HostName = new User().Name;
+            HostName = user!.Name;
+            MyName = HostName;
             IsHostUser = true;
             RowSize = selectedGameSize.Size;
             InitBoardAndStatus();
@@ -32,8 +33,6 @@ namespace TicTacTow25.ModelsLogic
             TimeLeft = timeLeft == Keys.FinishedSignal ? Strings.TimeUp : double.Round(timeLeft / 1000, 1).ToString();
             TimeLeftChanged?.Invoke(this, EventArgs.Empty);
         }
-
-       
         public override void InitBoardAndStatus()
         {
             gameBoard = new string[RowSize, RowSize];
@@ -52,7 +51,7 @@ namespace TicTacTow25.ModelsLogic
                 { nameof(GuestName), GuestName }
             };
             action = Actions.Changed;
-            fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
+            fbd?.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
         protected override void OnComplete(Task task)
         {
@@ -91,7 +90,7 @@ namespace TicTacTow25.ModelsLogic
                 { nameof(Move), Move },
                 { nameof(IsHostTurn), IsHostTurn }
             };
-            fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
+            fbd?.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
         protected override void OnChange(IDocumentSnapshot? snapshot, Exception? error)
         {
@@ -127,17 +126,17 @@ namespace TicTacTow25.ModelsLogic
         }
         public override void SetDocument(Action<Task> OnComplete)
         {
-            Id = fbd.SetDocument(this, Keys.GamesCollection, Id, OnComplete);
+            Id = fbd!.SetDocument(this, Keys.GamesCollection, Id, OnComplete);
         }
         public override void UpdateGuestUser(Action<Task> OnComplete)
         {
             IsFull = true;
-            GuestName = MyName;
+            GuestName = MyName!;
             UpdateFbJoinGame(OnComplete);
         }
         public override void AddSnapshotListener()
         {
-            ilr = fbd.AddSnapshotListener(Keys.GamesCollection, Id, OnChange);
+            ilr = fbd!.AddSnapshotListener(Keys.GamesCollection, Id, OnChange);
         }
         public override void RemoveSnapshotListener()
         {
@@ -147,7 +146,7 @@ namespace TicTacTow25.ModelsLogic
         }
         public override void DeleteDocument(Action<Task> OnComplete)
         {
-            fbd.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
+            fbd!.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
         }
     }
 }

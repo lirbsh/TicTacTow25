@@ -1,14 +1,16 @@
 ﻿using Plugin.CloudFirestore;
 using Plugin.CloudFirestore.Attributes;
+using TicTacTow25.Interfaces;
 using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.Models
 {
     public abstract class GameModel
     {
+        protected User? user = IPlatformApplication.Current?.Services.GetService<IUser>() as User;
         protected enum Actions { Changed, Deleted }
         protected Actions action = Actions.Changed;
-        protected FbData fbd = new();
+        protected FbData? fbd = IPlatformApplication.Current?.Services.GetService<IFbData>() as FbData;
         protected IListenerRegistration? ilr;
         protected GameStatus _status = new();
         protected string[,]? gameBoard;
@@ -34,7 +36,7 @@ namespace TicTacTow25.Models
         [Ignored]
         public abstract string OpponentName { get; }
         [Ignored]
-        public string MyName { get; set; } = new User().Name;
+        public string? MyName { get; set; } 
         [Ignored]
         public string RowSizeName => $"{RowSize} X {RowSize}";
         [Ignored]

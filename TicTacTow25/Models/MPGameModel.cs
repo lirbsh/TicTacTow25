@@ -1,12 +1,15 @@
 ﻿using Plugin.CloudFirestore;
 using Plugin.CloudFirestore.Attributes;
+using TicTacTow25.Interfaces;
 using TicTacTow25.ModelsLogic;
 namespace TicTacTow25.Models
 {
     public abstract class MPGameModel
     {
+        protected User? user = IPlatformApplication.Current?.Services.GetService<IUser>() as User;
+
         protected IListenerRegistration? ilr;
-        protected FbData fbd = new();
+        protected FbData? fbd = IPlatformApplication.Current?.Services.GetService<IFbData>() as FbData;
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IDocumentSnapshot? snapshot, Exception? error);
         [Ignored]
@@ -18,7 +21,7 @@ namespace TicTacTow25.Models
         [Ignored]
         public string Id { get; set; } = string.Empty;
         [Ignored]
-        public string MyName { get; set; } = new User().Name;
+        public string? MyName { get; set; } 
         [Ignored]
         public string MyMessage { get; set; } = string.Empty;
         [Ignored]

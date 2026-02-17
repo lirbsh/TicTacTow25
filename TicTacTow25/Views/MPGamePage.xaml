@@ -19,7 +19,7 @@
         <BoxView BackgroundColor="Blue" HeightRequest="1" />
         <Entry
             HorizontalOptions="Center"
-            Placeholder="Enter Your Message"
+            Placeholder="{x:Static m:Strings.MessageToSend}"
             Text="{Binding MyMessage}" />
         <Button
             Command="{Binding SendMessageCommand}"

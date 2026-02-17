@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CloudFirestore;
+using TicTacTow25.Interfaces;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
@@ -12,7 +13,7 @@ namespace TicTacTow25.Platforms.Android
     public class DeleteFbDocsService : Service
     {
         private bool isRunning = true;
-        private readonly FbData fbd = new();
+        private readonly FbData? fbd = IPlatformApplication.Current?.Services.GetService<IFbData>() as FbData;
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent? intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {

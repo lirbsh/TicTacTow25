@@ -1,12 +1,13 @@
 ﻿using Plugin.CloudFirestore;
 using System.Collections.ObjectModel;
+using TicTacTow25.Interfaces;
 using TicTacTow25.ModelsLogic;
 
 namespace TicTacTow25.Models
 {
     public abstract class GamesModel
     {
-        protected FbData fbd = new();
+        protected FbData? fbd = IPlatformApplication.Current?.Services.GetService<IFbData>() as FbData;
         protected IListenerRegistration? ilr;
         protected Game? _currentGame;
         protected abstract void OnComplete(Task task);

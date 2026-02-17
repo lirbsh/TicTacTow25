@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using System.Windows.Input;
+using TicTacTow25.Interfaces;
 using TicTacTow25.Models;
 using TicTacTow25.ModelsLogic;
 
@@ -8,22 +9,22 @@ namespace TicTacTow25.ViewModels
 {
     public partial class AuthPageVM : ObservableObject
     {
-        private readonly User user = new();
+        private readonly User? user = IPlatformApplication.Current?.Services.GetService<IUser>() as User;
         private readonly Animatioms animatioms = new() { IsLooping = true };
         public ICommand AuthCommand { get; }
         public ICommand ToggleIsPasswordCommand { get; }
-        public bool IsBusy => user.IsBusy;
-        public bool IsRegistered => user.IsRegistered;
+        public bool IsBusy => user!.IsBusy;
+        public bool IsRegistered => user!.IsRegistered;
         public string UserStateAction => animatioms.Text;
-        public string UserPrompt => user.Prompt;
+        public string UserPrompt => user!.Prompt;
         public double AnimationOpacity => animatioms.Opacity;
 
         public string Name
         {
-            get => user.Name;
+            get => user!.Name;
             set
             {
-                if (user.Name != value)
+                if (user!.Name != value)
                 {
                     user.Name = value;
                     (AuthCommand as Command)?.ChangeCanExecute();
@@ -32,10 +33,10 @@ namespace TicTacTow25.ViewModels
         }
         public string Email
         {
-            get => user.Email;
+            get => user!.Email;
             set
             {
-                if (user.Email != value)
+                if (user!.Email != value)
                 {
                     user.Email = value;
                     (AuthCommand as Command)?.ChangeCanExecute();
@@ -44,10 +45,10 @@ namespace TicTacTow25.ViewModels
         }
         public string Password
         {
-            get => user.Password;
+            get => user!.Password;
             set
             {
-                if (user.Password != value)
+                if (user!.Password != value)
                 {
                     user.Password = value;
                     (AuthCommand as Command)?.ChangeCanExecute();
@@ -58,7 +59,7 @@ namespace TicTacTow25.ViewModels
 
         public AuthPageVM()
         {
-            AuthCommand = user.IsRegistered? new Command(Login, CanAuth): new Command(Register, CanAuth);
+            AuthCommand = user!.IsRegistered? new Command(Login, CanAuth): new Command(Register, CanAuth);
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
             user.AuthComplete += OnAuthComplete;
             user.AuthError += OnAuthError;
@@ -74,7 +75,7 @@ namespace TicTacTow25.ViewModels
         public void StartAnimations()
         {
             animatioms.StartOpacityAnimation();
-            animatioms.StartTextAnimation(user.IsRegistered ? Strings.Login : Strings.Register);
+            animatioms.StartTextAnimation(user!.IsRegistered ? Strings.Login : Strings.Register);
         }
 
         private void OnOpacityChanged(object? sender, EventArgs e)
@@ -110,13 +111,13 @@ namespace TicTacTow25.ViewModels
         }
         private bool CanAuth()
         {
-            return user.IsValid() ;
+            return user!.IsValid() ;
         }
         private void Login()
         {
             if (!IsBusy)
             {
-                user.Login();
+                user!.Login();
                 OnPropertyChanged(nameof(IsBusy));
                 (AuthCommand as Command)?.ChangeCanExecute();
             }
@@ -125,7 +126,7 @@ namespace TicTacTow25.ViewModels
         {
             if (!IsBusy)
             {
-                user.Register();
+                user!.Register();
                 OnPropertyChanged(nameof(IsBusy));
                 (AuthCommand as Command)?.ChangeCanExecute();
             }

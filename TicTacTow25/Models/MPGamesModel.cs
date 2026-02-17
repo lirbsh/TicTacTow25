@@ -6,7 +6,7 @@ namespace TicTacTow25.Models
 {
     public abstract class MPGamesModel
     {
-        protected FbData fbd = new();
+        protected FbData? fbd = new();
         protected IListenerRegistration? ilr;
         protected MPGame? _currentGame;
         protected abstract void OnComplete(Task task);

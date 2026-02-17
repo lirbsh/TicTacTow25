@@ -1,14 +1,16 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
+﻿using TicTacTow25.Interfaces;
 using TicTacTow25.Models;
 
 namespace TicTacTow25.ModelsLogic
 {
-    public class User : UserModel
+    public class User : UserModel, IUser
     {
+        public event EventHandler<string>? AuthError;
+        public event EventHandler<bool>? AuthComplete;
+
         protected override void ShowAlert(string errMessage)
         {
-            errMessage = fbd.GetErrorMessage(errMessage);
+            errMessage = fbd!.GetErrorMessage(errMessage);
             AuthError?.Invoke(this, errMessage);
             
         }
@@ -46,12 +48,12 @@ namespace TicTacTow25.ModelsLogic
         {
             IsBusy = true;
             CurrentAction= Actions.Register;
-            fbd.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
+            fbd?.CreateUserWithEmailAndPasswordAsync(Email, Password, Name, OnComplete);
         }
         public override void Login()
         {
             IsBusy = true;
-            fbd.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
+            fbd?.SignInWithEmailAndPasswordAsync(Email, Password, OnComplete);
         }
         public override bool IsValid()
         {
